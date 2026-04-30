@@ -22,14 +22,14 @@ const CID_ORDER = [
 const CID_LABELS = {
   SST: "SST",
   SBT: "SBT",
-  Nmonth_sst_p99: "        NM SST>P99",
-  Nmonth_sst_p01: "        NM SST<P1",
+  Nmonth_sst_p99: "NM SST>P99",
+  Nmonth_sst_p01: "NM SST<P1",
   SSS: "SSS",
   MLD: "MLDₘₐₓ",
   SI: "SI",
   CUIfav: "CUI",
   Nmonth_ws_p99: "NMτ>P99",
-  NMONTH_T20m: "   NM T₂₀ₘ >25°C"
+  NMONTH_T20m: "NM T₂₀ₘ >25°C"
 };
 
 const LIKE_ORDER = [
@@ -151,9 +151,9 @@ function drawCidLabels(angles) {
 
     if (cid === "SST") labelRadius = radius * 1.08;
     if (cid === "SBT") labelRadius = radius * 1.09;
-    if (cid === "Nmonth_sst_p99") labelRadius = radius * 1.10;
-    if (cid === "Nmonth_sst_p01") labelRadius = radius * 1.10;
-    if (cid === "NMONTH_T20m") labelRadius = radius * 1.11;
+    if (cid === "Nmonth_sst_p99") labelRadius = radius * 1.18;
+    if (cid === "Nmonth_sst_p01") labelRadius = radius * 1.18;
+    if (cid === "NMONTH_T20m") labelRadius = radius * 1.12;
     if (cid === "SSS") labelRadius = radius * 1.08;
     if (cid === "MLD") labelRadius = radius * 1.08;
     if (cid === "SI") labelRadius = radius * 1.08;
@@ -336,7 +336,7 @@ function drawLegend() {
     text.textContent = label;
     svg.appendChild(text);
 
-    y += 23;
+    y += 18;
   }
 
   const box2Y = 395;
@@ -363,8 +363,8 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 40;
-  const col2X = x + 210;
+  const col1X = x + 25;
+  const col2X = x + 175;
   const rowY = box2Y + 28;
 
   drawLegendArrow(col1X, rowY, "up");
