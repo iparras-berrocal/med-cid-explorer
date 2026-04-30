@@ -22,14 +22,14 @@ const CID_ORDER = [
 const CID_LABELS = {
   SST: "SST",
   SBT: "SBT",
-  Nmonth_sst_p99: "NM SST>P99",
-  Nmonth_sst_p01: "NM SST<P1",
+  Nmonth_sst_p99: "    NM SST>P99",
+  Nmonth_sst_p01: "    NM SST<P1",
   SSS: "SSS",
   MLD: "MLDₘₐₓ",
   SI: "SI",
   CUIfav: "CUI",
   Nmonth_ws_p99: "NMτ>P99",
-  NMONTH_T20m: "NM T₂₀ₘ >25°C"
+  NMONTH_T20m: "   NM T₂₀ₘ >25°C"
 };
 
 const LIKE_ORDER = [
@@ -309,7 +309,7 @@ function drawLegend() {
     "font-weight": "bold"
   });
 
-  title.textContent = "Confidence in future changes";
+  title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
   y += 8;
@@ -360,25 +360,30 @@ function drawLegend() {
     "font-weight": "bold"
   });
 
-  title2.textContent = "Observational trend evidence";
+  title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  drawLegendArrow(x + 18, box2Y + 22, "up");
-  drawLegendArrow(x + 18, box2Y + 48, "down");
+  const col1X = x + 20;
+  const col2X = x + 180;
+  const rowY = box2Y + 28;
+
+  drawLegendArrow(col1X, rowY, "up");
 
   const upText = makeEl("text", {
-    x: x + 42,
-    y: box2Y + 26,
-    "font-size": 13
+    x: col1X + 22,
+    y: rowY + 4,
+    "font-size": 14
   });
 
   upText.textContent = "Past upward trend";
   svg.appendChild(upText);
 
+  drawLegendArrow(col2X, rowY, "down");
+
   const downText = makeEl("text", {
-    x: x + 42,
-    y: box2Y + 52,
-    "font-size": 13
+    x: col2X + 22,
+    y: rowY + 4,
+    "font-size": 14
   });
 
   downText.textContent = "Past downward trend";
