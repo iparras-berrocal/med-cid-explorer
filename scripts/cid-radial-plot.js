@@ -363,8 +363,8 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 70;
-  const col2X = x + 230;
+  const col1X = x + 25;
+  const col2X = x + 180;
   const rowY = box2Y + 20;
 
   drawLegendArrow(col1X, rowY, "up");
