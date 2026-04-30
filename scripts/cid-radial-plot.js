@@ -287,15 +287,18 @@ function drawLegendArrow(x, y, direction) {
 }
 
 function drawLegend() {
+
   const x = 690;
   let y = 170;
+
+  // ----- PRIMERA LEYENDA -----
 
   svg.appendChild(
     makeEl("rect", {
       x: x - 25,
       y: y - 40,
       width: 350,
-      height: 190,
+      height: 185,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -304,7 +307,7 @@ function drawLegend() {
 
   const title = makeEl("text", {
     x,
-    y: y - 20,
+    y: y - 16,
     "font-size": 14,
     "font-weight": "bold"
   });
@@ -312,9 +315,10 @@ function drawLegend() {
   title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 8;
+  y += 6;
 
   for (const label of LIKE_ORDER) {
+
     svg.appendChild(
       makeEl("rect", {
         x,
@@ -330,14 +334,16 @@ function drawLegend() {
     const text = makeEl("text", {
       x: x + 42,
       y: y + 11,
-      "font-size": 14
+      "font-size": 13
     });
 
     text.textContent = label;
     svg.appendChild(text);
 
-    y += 22;
+    y += 23;
   }
+
+  // ----- SEGUNDA LEYENDA -----
 
   const box2Y = 370;
 
@@ -363,27 +369,40 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 25;
-  const col2X = x + 180;
+  // ----- CENTRADO GEOMÉTRICO REAL -----
+
+  const centerBox = x + 150;   // centro de caja (350 / 2)
+
+  const colSpacing = 80;       // distancia desde el centro
+
+  const col1X = centerBox - colSpacing;
+  const col2X = centerBox + colSpacing;
+
   const rowY = box2Y + 20;
+
+  // ----- UP -----
 
   drawLegendArrow(col1X, rowY, "up");
 
   const upText = makeEl("text", {
     x: col1X + 22,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 13,
+    "text-anchor": "start"
   });
 
   upText.textContent = "Past upward trend";
   svg.appendChild(upText);
+
+  // ----- DOWN -----
 
   drawLegendArrow(col2X, rowY, "down");
 
   const downText = makeEl("text", {
     x: col2X + 22,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 13,
+    "text-anchor": "start"
   });
 
   downText.textContent = "Past downward trend";
