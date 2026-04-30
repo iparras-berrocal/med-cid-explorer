@@ -111,7 +111,7 @@ function drawPolygonRingGuides(nRings, nSides) {
     const pts = [];
 
     for (let j = 0; j < nSides; j++) {
-      pts.push(polar(r, -180 + j * step));
+      pts.push(polar(r, -108 + j * step));
     }
 
     svg.appendChild(
@@ -457,3 +457,4 @@ fetch(`${basePath}/images/cid_data.json`)
     container.innerHTML =
       `<p style="color:red;">Could not load CID data: ${error}</p>`;
   });
+fetch("images/cid_data.json")
