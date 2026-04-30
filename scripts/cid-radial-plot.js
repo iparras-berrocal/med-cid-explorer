@@ -22,8 +22,8 @@ const CID_ORDER = [
 const CID_LABELS = {
   SST: "SST",
   SBT: "SBT",
-  Nmonth_sst_p99: "    NM SST>P99",
-  Nmonth_sst_p01: "    NM SST<P1",
+  Nmonth_sst_p99: "        NM SST>P99",
+  Nmonth_sst_p01: "        NM SST<P1",
   SSS: "SSS",
   MLD: "MLDₘₐₓ",
   SI: "SI",
