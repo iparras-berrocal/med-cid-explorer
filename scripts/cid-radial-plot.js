@@ -304,7 +304,7 @@ function drawLegend() {
 
   const title = makeEl("text", {
     x,
-    y: y - 18,
+    y: y - 20,
     "font-size": 14,
     "font-weight": "bold"
   });
@@ -312,7 +312,7 @@ function drawLegend() {
   title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 6;
+  y += 8;
 
   for (const label of LIKE_ORDER) {
     svg.appendChild(
@@ -339,11 +339,11 @@ function drawLegend() {
     y += 22;
   }
 
-  const box2Y = 395;
+  const box2Y = 370;
 
   svg.appendChild(
     makeEl("rect", {
-      x: x - 25,
+      x: x - 15,
       y: box2Y - 30,
       width: 350,
       height: 72,
