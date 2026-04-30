@@ -257,8 +257,8 @@ function drawTitle(region) {
     x: centerX,
     y: 42,
     "text-anchor": "middle",
-    "font-size": 18,
-    "font-weight": "bold",
+    "font-size": 22,
+    "font-weight": "600",
     fill: "black"
   });
 
