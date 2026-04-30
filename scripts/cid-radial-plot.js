@@ -343,7 +343,7 @@ function drawLegend() {
 
   svg.appendChild(
     makeEl("rect", {
-      x: x - 5,
+      x: x - 25,
       y: box2Y - 30,
       width: 350,
       height: 68,
