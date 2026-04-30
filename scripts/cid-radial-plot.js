@@ -355,7 +355,7 @@ function drawLegend() {
 
   const title2 = makeEl("text", {
     x,
-    y: box2Y - 10,
+    y: box2Y - 8,
     "font-size": 14,
     "font-weight": "bold"
   });
@@ -363,9 +363,9 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 15;
-  const col2X = x + 175;
-  const rowY = box2Y + 28;
+  const col1X = x + 70;
+  const col2X = x + 230;
+  const rowY = box2Y + 20;
 
   drawLegendArrow(col1X, rowY, "up");
 
