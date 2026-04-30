@@ -252,6 +252,26 @@ function addArrowMarker() {
   svg.appendChild(defs);
 }
 
+function drawLegendArrow(x, y, direction) {
+  const angle = direction === "up" ? -45 : 45;
+  const len = 16;
+
+  const dx = Math.cos(angle * Math.PI / 180) * len;
+  const dy = Math.sin(angle * Math.PI / 180) * len;
+
+  svg.appendChild(
+    makeEl("line", {
+      x1: x - dx / 2,
+      y1: y - dy / 2,
+      x2: x + dx / 2,
+      y2: y + dy / 2,
+      stroke: "black",
+      "stroke-width": 1.5,
+      "marker-end": "url(#arrowhead)"
+    })
+  );
+}
+
 function drawTitle(region) {
   const text = makeEl("text", {
     x: centerX,
@@ -267,11 +287,8 @@ function drawTitle(region) {
 }
 
 function drawLegend() {
-
   const x = 690;
   let y = 170;
-
-  // ----- PRIMERA LEYENDA -----
 
   svg.appendChild(
     makeEl("rect", {
@@ -292,14 +309,12 @@ function drawLegend() {
     "font-weight": "bold"
   });
 
-  title.textContent =
-    "Key for level of confidence in future changes";
+  title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
   y += 4;
 
   for (const label of LIKE_ORDER) {
-
     svg.appendChild(
       makeEl("rect", {
         x,
@@ -324,8 +339,6 @@ function drawLegend() {
     y += 23;
   }
 
-  // ----- SEGUNDA LEYENDA -----
-
   const box2Y = 370;
 
   svg.appendChild(
@@ -347,22 +360,19 @@ function drawLegend() {
     "font-weight": "bold"
   });
 
-  title2.textContent =
-    "Key for observational trend evidence";
+  title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  // posiciones originales
-
   const col1X = x + 5;
-  const col2X = x + 165;
+  const col2X = x + 160;
   const rowY = box2Y + 22;
 
   drawLegendArrow(col1X, rowY, "up");
 
   const upText = makeEl("text", {
-    x: col1X + 22,
+    x: col1X + 20,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 12
   });
 
   upText.textContent = "Past upward trend";
@@ -371,9 +381,9 @@ function drawLegend() {
   drawLegendArrow(col2X, rowY, "down");
 
   const downText = makeEl("text", {
-    x: col2X + 22,
+    x: col2X + 20,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 12
   });
 
   downText.textContent = "Past downward trend";
