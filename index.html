@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Mediterranean CID Explorer</title>
+  <title>Mediterranean CIDs Explorer</title>
 
   <style>
     :root {
       --accent: #0b7285;
       --accent-dark: #075969;
-      --text: #1f2933;
-      --muted: #5f6c7b;
-      --bg: #f6f8fb;
+      --ink: #102033;
+      --muted: #5b6b7f;
+      --bg: #f3f7fb;
       --card: #ffffff;
-      --border: #d9e2ec;
+      --line: #d8e3ef;
+      --soft: #eef8fa;
     }
 
     * {
@@ -23,92 +24,128 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #e8f7fa 0, transparent 34%),
+        linear-gradient(180deg, #f7fafc 0%, var(--bg) 100%);
     }
 
     .page {
-      max-width: 1100px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 40px 24px 60px;
+      padding: 34px 22px 54px;
     }
 
     .hero {
-      background: linear-gradient(135deg, #ffffff 0%, #eef7f9 100%);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 34px 38px;
-      margin-bottom: 28px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #ffffff 0%, #eef9fb 100%);
+      border-radius: 22px;
+      padding: 34px 40px;
+      box-shadow: 0 18px 45px rgba(16, 32, 51, 0.08);
+      margin-bottom: 26px;
     }
 
-    .eyebrow {
+    .tag {
+      display: inline-block;
+      margin-bottom: 14px;
       color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
       font-size: 13px;
-      margin-bottom: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     h1 {
-      margin: 0 0 12px;
-      font-size: clamp(30px, 4vw, 46px);
-      line-height: 1.1;
-      color: #111827;
+      max-width: 900px;
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #071426;
     }
 
     .subtitle {
-      max-width: 780px;
+      max-width: 760px;
       margin: 0;
       font-size: 17px;
-      line-height: 1.6;
+      line-height: 1.65;
       color: var(--muted);
     }
 
-    .tool-card {
+    .tool-shell {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 26px;
-      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 18px 45px rgba(16, 32, 51, 0.07);
+    }
+
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .tool-title {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .tool-description {
+      margin: 6px 0 0;
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
     }
 
     .controls {
       display: flex;
       flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
       justify-content: center;
-      gap: 18px 28px;
-      margin-bottom: 18px;
-      padding: 18px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      padding: 16px 18px;
+      background: #f8fbfe;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-width: 360px;
     }
 
     .control {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #243b53;
+      color: #18324a;
+      font-size: 14px;
+      font-weight: 800;
     }
 
     select {
-      min-width: 170px;
-      padding: 8px 12px;
-      border: 1px solid #b8c4d4;
-      border-radius: 8px;
+      min-width: 175px;
+      padding: 9px 12px;
+      border: 1px solid #b8c8d9;
+      border-radius: 10px;
       background: white;
-      color: #1f2933;
+      color: var(--ink);
       font-size: 15px;
+      box-shadow: 0 1px 2px rgba(16, 32, 51, 0.04);
     }
 
     select:focus {
-      outline: 3px solid rgba(11, 114, 133, 0.18);
+      outline: 3px solid rgba(11, 114, 133, 0.16);
       border-color: var(--accent);
+    }
+
+    .plot-card {
+      border: 1px solid #edf2f7;
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 10px 6px 4px;
     }
 
     #cid-radial-plot {
@@ -116,37 +153,74 @@
       justify-content: center;
       width: 100%;
       overflow-x: auto;
-      margin-top: 8px;
     }
 
-    .note {
-      margin-top: 18px;
-      font-size: 13px;
-      color: var(--muted);
+    .tool-note {
+      margin: 14px 0 0;
       text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .info-box {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .info-box h3 {
+      margin: 0 0 8px;
+      color: var(--accent-dark);
+      font-size: 15px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.5;
     }
 
     footer {
-      margin-top: 24px;
+      margin-top: 26px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
     }
 
-    a {
-      color: var(--accent-dark);
+    @media (max-width: 900px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .controls {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .info-row {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 600px) {
       .page {
-        padding: 24px 14px 40px;
+        padding: 20px 12px 40px;
       }
 
       .hero {
         padding: 26px 22px;
       }
 
-      .tool-card {
+      .tool-shell {
         padding: 16px;
       }
 
@@ -156,7 +230,7 @@
       }
 
       select {
-        min-width: 190px;
+        min-width: 185px;
       }
     }
   </style>
@@ -166,54 +240,85 @@
   <main class="page">
 
     <section class="hero">
-      <div class="eyebrow">Med-CORDEX initiative</div>
+      <div class="tag">Med-CORDEX initiative</div>
 
       <h1>Mediterranean Climatic Impact-Drivers (CIDs) Explorer</h1>
 
       <p class="subtitle">
-        Interactive visualization of Climatic Impact-Drivers (CIDs) across Mediterranean regions,
-        warming levels, and filtering methods from Parras-Berrocal et al.().
+        Interactive visualization of Climatic Impact-Drivers across Mediterranean regions,
+        warming levels and filtering methods from Parras-Berrocal et al.
       </p>
     </section>
 
-    <section class="tool-card">
-
-      <div class="controls">
-
-        <div class="control">
-          <label for="cid-method">Method</label>
-          <select id="cid-method">
-            <option value="method_A">Method A</option>
-            <option value="method_B">Method B</option>
-            <option value="method_C">Method C</option>
-          </select>
+    <section class="tool-shell">
+      <div class="tool-header">
+        <div>
+          <h2 class="tool-title">CID radial assessment</h2>
+          <p class="tool-description">
+            Select a filtering method and region to explore the level of confidence in projected
+            changes and the associated observational trend evidence.
+          </p>
         </div>
 
-        <div class="control">
-          <label for="cid-region">Region</label>
-          <select id="cid-region">
-            <option>Mediterranean Sea</option>
-            <option>Western Med</option>
-            <option>Eastern Med</option>
-            <option>Adriatic Sea</option>
-            <option>Aegean Sea</option>
-            <option>Continental coastline</option>
-            <option>Island coastline</option>
-          </select>
-        </div>
+        <div class="controls">
+          <div class="control">
+            <label for="cid-method">Method</label>
+            <select id="cid-method">
+              <option value="method_A">Method A</option>
+              <option value="method_B">Method B</option>
+              <option value="method_C">Method C</option>
+            </select>
+          </div>
 
+          <div class="control">
+            <label for="cid-region">Region</label>
+            <select id="cid-region">
+              <option>Mediterranean Sea</option>
+              <option>Western Med</option>
+              <option>Eastern Med</option>
+              <option>Adriatic Sea</option>
+              <option>Aegean Sea</option>
+              <option>Continental coastline</option>
+              <option>Island coastline</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div id="cid-radial-plot"></div>
+      <div class="plot-card">
+        <div id="cid-radial-plot"></div>
+      </div>
 
-      <p class="note">
-        Select a filtering method and Mediterranean region to update the CID radial diagram.
+      <p class="tool-note">
+        The outer ring represents historical/observational evidence; inner rings show increasing global warming levels.
       </p>
+    </section>
 
+    <section class="info-row">
+      <div class="info-box">
+        <h3>Methods</h3>
+        <p>
+          Compare alternative filtering rules used to assess robustness and confidence in CID changes.
+        </p>
+      </div>
+
+      <div class="info-box">
+        <h3>Regions</h3>
+        <p>
+          Explore the Mediterranean basin and selected sub-regions, including western, eastern and coastal domains.
+        </p>
+      </div>
+
+      <div class="info-box">
+        <h3>Confidence levels</h3>
+        <p>
+          Colors summarize confidence in the direction and relevance of projected future changes.
+        </p>
+      </div>
     </section>
 
     <footer>
-      Mediterranean CID Explorer · Web-based interactive visualization
+      Mediterranean CIDs Explorer · Interactive web tool
     </footer>
 
   </main>
