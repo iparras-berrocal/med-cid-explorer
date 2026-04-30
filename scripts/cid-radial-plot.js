@@ -83,11 +83,10 @@ function getCidAngles() {
 
   for (let i = 0; i < CID_ORDER.length; i++) {
     const cid = CID_ORDER[i];
-
-    const angle1 = -108 + i * step;
-    const angle2 = -108 + (i + 1) * step;
-
-    angles[cid] = [angle1, angle2];
+    angles[cid] = [
+      -108 + i * step,
+      -108 + (i + 1) * step
+    ];
   }
 
   return angles;
@@ -150,16 +149,16 @@ function drawCidLabels(angles) {
 
     let labelRadius = radius * 1.10;
 
-    if (cid === "SST") labelRadius = radius * 1.12;
-    if (cid === "SBT") labelRadius = radius * 1.11;
-    if (cid === "Nmonth_sst_p99") labelRadius = radius * 1.11;
-    if (cid === "Nmonth_sst_p01") labelRadius = radius * 1.11;
-    if (cid === "NMONTH_T20m") labelRadius = radius * 1.12;
-    if (cid === "SSS") labelRadius = radius * 1.10;
-    if (cid === "MLD") labelRadius = radius * 1.10;
-    if (cid === "SI") labelRadius = radius * 1.10;
-    if (cid === "Nmonth_ws_p99") labelRadius = radius * 1.11;
-    if (cid === "CUIfav") labelRadius = radius * 1.10;
+    if (cid === "SST") labelRadius = radius * 1.08;
+    if (cid === "SBT") labelRadius = radius * 1.09;
+    if (cid === "Nmonth_sst_p99") labelRadius = radius * 1.10;
+    if (cid === "Nmonth_sst_p01") labelRadius = radius * 1.10;
+    if (cid === "NMONTH_T20m") labelRadius = radius * 1.11;
+    if (cid === "SSS") labelRadius = radius * 1.08;
+    if (cid === "MLD") labelRadius = radius * 1.08;
+    if (cid === "SI") labelRadius = radius * 1.08;
+    if (cid === "Nmonth_ws_p99") labelRadius = radius * 1.10;
+    if (cid === "CUIfav") labelRadius = radius * 1.08;
 
     const p = polar(labelRadius, mid);
 
@@ -182,7 +181,6 @@ function drawGwlLabels(gwls) {
   const labels = ["Hist."].concat(gwls.slice(1).map(g => `+${g}°C`));
   const n = gwls.length;
   const ringSize = radius / n;
-
   const angle = -72;
 
   for (let i = 0; i < n; i++) {
@@ -194,7 +192,7 @@ function drawGwlLabels(gwls) {
       y: p.y,
       "text-anchor": "middle",
       "dominant-baseline": "middle",
-      "font-size": 12,
+      "font-size": 11,
       "font-weight": "bold",
       fill: "black"
     });
@@ -214,6 +212,7 @@ function drawTrendArrow(angle1, angle2, trend) {
 
   const arrowAngle = trend.direction === "up" ? -45 : 45;
   const len = 22;
+
   const dx = Math.cos(arrowAngle * Math.PI / 180) * len;
   const dy = Math.sin(arrowAngle * Math.PI / 180) * len;
 
@@ -270,6 +269,7 @@ function drawTitle(region) {
 function drawLegendArrow(x, y, direction) {
   const angle = direction === "up" ? -45 : 45;
   const len = 18;
+
   const dx = Math.cos(angle * Math.PI / 180) * len;
   const dy = Math.sin(angle * Math.PI / 180) * len;
 
@@ -295,7 +295,7 @@ function drawLegend() {
       x: x - 25,
       y: y - 40,
       width: 520,
-      height: 200,
+      height: 180,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -312,7 +312,7 @@ function drawLegend() {
   title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 5;
+  y += 2;
 
   for (const label of LIKE_ORDER) {
     svg.appendChild(
@@ -339,7 +339,7 @@ function drawLegend() {
     y += 24;
   }
 
-  const box2Y = y + 45;
+  const box2Y = y + 30;
 
   svg.appendChild(
     makeEl("rect", {
@@ -434,11 +434,7 @@ function updatePlot() {
   drawRadial(method, region);
 }
 
-const basePath = window.location.pathname.includes("/med-cordex.github.io/")
-  ? "/med-cordex.github.io"
-  : "";
-
-fetch(`${basePath}/images/cid_data.json`)
+fetch("images/cid_data.json")
   .then(r => r.json())
   .then(data => {
     CID_DATA = data;
@@ -457,4 +453,3 @@ fetch(`${basePath}/images/cid_data.json`)
     container.innerHTML =
       `<p style="color:red;">Could not load CID data: ${error}</p>`;
   });
-fetch("images/cid_data.json")
