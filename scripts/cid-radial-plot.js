@@ -257,7 +257,7 @@ function drawTitle(region) {
     x: centerX,
     y: 42,
     "text-anchor": "middle",
-    "font-size": 15,
+    "font-size": 18,
     "font-weight": "bold",
     fill: "black"
   });
@@ -312,7 +312,7 @@ function drawLegend() {
   title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 8;
+  y += 4;
 
   for (const label of LIKE_ORDER) {
     svg.appendChild(
@@ -363,8 +363,8 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 20;
-  const col2X = x + 180;
+  const col1X = x + 40;
+  const col2X = x + 210;
   const rowY = box2Y + 28;
 
   drawLegendArrow(col1X, rowY, "up");
