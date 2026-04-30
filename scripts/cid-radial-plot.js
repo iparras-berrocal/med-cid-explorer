@@ -167,7 +167,7 @@ function drawCidLabels(angles) {
       y: p.y,
       "text-anchor": "middle",
       "dominant-baseline": "middle",
-      "font-size": 13,
+      "font-size": 14,
       "font-weight": "bold",
       fill: "gray"
     });
@@ -294,8 +294,8 @@ function drawLegend() {
     makeEl("rect", {
       x: x - 25,
       y: y - 40,
-      width: 330,
-      height: 205,
+      width: 350,
+      height: 190,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -330,23 +330,23 @@ function drawLegend() {
     const text = makeEl("text", {
       x: x + 42,
       y: y + 11,
-      "font-size": 13
+      "font-size": 14
     });
 
     text.textContent = label;
     svg.appendChild(text);
 
-    y += 25;
+    y += 23;
   }
 
-  const box2Y = 410;
+  const box2Y = 395;
 
   svg.appendChild(
     makeEl("rect", {
       x: x - 25,
       y: box2Y - 30,
-      width: 330,
-      height: 90,
+      width: 350,
+      height: 72,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -372,7 +372,7 @@ function drawLegend() {
   const upText = makeEl("text", {
     x: col1X + 22,
     y: rowY + 4,
-    "font-size": 14
+    "font-size": 13
   });
 
   upText.textContent = "Past upward trend";
@@ -383,7 +383,7 @@ function drawLegend() {
   const downText = makeEl("text", {
     x: col2X + 22,
     y: rowY + 4,
-    "font-size": 14
+    "font-size": 13
   });
 
   downText.textContent = "Past downward trend";
