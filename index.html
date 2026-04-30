@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mediterranean CID Explorer</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      text-align: center;
+    }
+
+    select {
+      margin: 10px;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    #cid-radial-plot {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Mediterranean Climatic Impact Drivers (CID) Explorer</h1>
+
+<p>
+  <label>Method:</label>
+  <select id="cid-method">
+    <option value="method_A">Method A</option>
+    <option value="method_B">Method B</option>
+    <option value="method_C">Method C</option>
+  </select>
+</p>
+
+<p>
+  <label>Region:</label>
+  <select id="cid-region">
+    <option>Mediterranean Sea</option>
+    <option>Western Med</option>
+    <option>Eastern Med</option>
+    <option>Adriatic Sea</option>
+    <option>Aegean Sea</option>
+    <option>Continental coastline</option>
+    <option>Island coastline</option>
+  </select>
+</p>
+
+<div id="cid-radial-plot"></div>
+
+<script src="scripts/cid-radial-plot.js"></script>
+
+</body>
+</html>
