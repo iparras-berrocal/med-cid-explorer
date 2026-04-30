@@ -1,10 +1,10 @@
 let CID_DATA = null;
 
-const width = 760;
-const height = 940;
-const radius = 235;
-const centerX = width / 2;
-const centerY = 345;
+const width = 1050;
+const height = 620;
+const radius = 220;
+const centerX = 360;
+const centerY = 320;
 
 const CID_ORDER = [
   "SST",
@@ -287,15 +287,15 @@ function drawLegendArrow(x, y, direction) {
 }
 
 function drawLegend() {
-  const x = 130;
-  let y = 675;
+  const x = 690;
+  let y = 170;
 
   svg.appendChild(
     makeEl("rect", {
       x: x - 25,
       y: y - 40,
-      width: 520,
-      height: 180,
+      width: 330,
+      height: 205,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -309,10 +309,10 @@ function drawLegend() {
     "font-weight": "bold"
   });
 
-  title.textContent = "Key for level of confidence in future changes";
+  title.textContent = "Confidence in future changes";
   svg.appendChild(title);
 
-  y += 2;
+  y += 8;
 
   for (const label of LIKE_ORDER) {
     svg.appendChild(
@@ -330,23 +330,23 @@ function drawLegend() {
     const text = makeEl("text", {
       x: x + 42,
       y: y + 11,
-      "font-size": 14
+      "font-size": 13
     });
 
     text.textContent = label;
     svg.appendChild(text);
 
-    y += 24;
+    y += 25;
   }
 
-  const box2Y = y + 30;
+  const box2Y = 410;
 
   svg.appendChild(
     makeEl("rect", {
       x: x - 25,
       y: box2Y - 30,
-      width: 520,
-      height: 62,
+      width: 330,
+      height: 90,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -355,30 +355,30 @@ function drawLegend() {
 
   const title2 = makeEl("text", {
     x,
-    y: box2Y - 11,
-    "font-size": 13,
+    y: box2Y - 10,
+    "font-size": 14,
     "font-weight": "bold"
   });
 
-  title2.textContent = "Key for observational trend evidence";
+  title2.textContent = "Observational trend evidence";
   svg.appendChild(title2);
 
-  drawLegendArrow(x + 18, box2Y + 15, "up");
-  drawLegendArrow(x + 220, box2Y + 15, "down");
+  drawLegendArrow(x + 18, box2Y + 22, "up");
+  drawLegendArrow(x + 18, box2Y + 48, "down");
 
   const upText = makeEl("text", {
     x: x + 42,
-    y: box2Y + 19,
-    "font-size": 12.5
+    y: box2Y + 26,
+    "font-size": 13
   });
 
   upText.textContent = "Past upward trend";
   svg.appendChild(upText);
 
   const downText = makeEl("text", {
-    x: x + 245,
-    y: box2Y + 19,
-    "font-size": 12.5
+    x: x + 42,
+    y: box2Y + 52,
+    "font-size": 13
   });
 
   downText.textContent = "Past downward trend";
