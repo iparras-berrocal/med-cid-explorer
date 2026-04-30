@@ -312,7 +312,7 @@ function drawLegend() {
   title.textContent = "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 4;
+  y += 6;
 
   for (const label of LIKE_ORDER) {
     svg.appendChild(
@@ -336,7 +336,7 @@ function drawLegend() {
     text.textContent = label;
     svg.appendChild(text);
 
-    y += 18;
+    y += 22;
   }
 
   const box2Y = 395;
@@ -363,7 +363,7 @@ function drawLegend() {
   title2.textContent = "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  const col1X = x + 25;
+  const col1X = x + 15;
   const col2X = x + 175;
   const rowY = box2Y + 28;
 
