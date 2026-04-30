@@ -266,26 +266,6 @@ function drawTitle(region) {
   svg.appendChild(text);
 }
 
-function drawLegendArrow(x, y, direction) {
-  const angle = direction === "up" ? -45 : 45;
-  const len = 18;
-
-  const dx = Math.cos(angle * Math.PI / 180) * len;
-  const dy = Math.sin(angle * Math.PI / 180) * len;
-
-  svg.appendChild(
-    makeEl("line", {
-      x1: x - dx / 2,
-      y1: y - dy / 2,
-      x2: x + dx / 2,
-      y2: y + dy / 2,
-      stroke: "black",
-      "stroke-width": 1.6,
-      "marker-end": "url(#arrowhead)"
-    })
-  );
-}
-
 function drawLegend() {
 
   const x = 690;
@@ -298,7 +278,7 @@ function drawLegend() {
       x: x - 25,
       y: y - 40,
       width: 350,
-      height: 185,
+      height: 190,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -307,15 +287,16 @@ function drawLegend() {
 
   const title = makeEl("text", {
     x,
-    y: y - 16,
+    y: y - 18,
     "font-size": 14,
     "font-weight": "bold"
   });
 
-  title.textContent = "Key for level of confidence in future changes";
+  title.textContent =
+    "Key for level of confidence in future changes";
   svg.appendChild(title);
 
-  y += 6;
+  y += 4;
 
   for (const label of LIKE_ORDER) {
 
@@ -334,7 +315,7 @@ function drawLegend() {
     const text = makeEl("text", {
       x: x + 42,
       y: y + 11,
-      "font-size": 13
+      "font-size": 14
     });
 
     text.textContent = label;
@@ -352,7 +333,7 @@ function drawLegend() {
       x: x - 25,
       y: box2Y - 30,
       width: 350,
-      height: 68,
+      height: 72,
       fill: "white",
       stroke: "#cccccc",
       "stroke-width": 1
@@ -361,48 +342,38 @@ function drawLegend() {
 
   const title2 = makeEl("text", {
     x,
-    y: box2Y - 8,
+    y: box2Y - 10,
     "font-size": 14,
     "font-weight": "bold"
   });
 
-  title2.textContent = "Key for observational trend evidence";
+  title2.textContent =
+    "Key for observational trend evidence";
   svg.appendChild(title2);
 
-  // ----- CENTRADO GEOMÉTRICO REAL -----
+  // posiciones originales
 
-  const centerBox = x + 150;   // centro de caja (350 / 2)
-
-  const colSpacing = 80;       // distancia desde el centro
-
-  const col1X = centerBox - colSpacing;
-  const col2X = centerBox + colSpacing;
-
-  const rowY = box2Y + 20;
-
-  // ----- UP -----
+  const col1X = x + 5;
+  const col2X = x + 165;
+  const rowY = box2Y + 22;
 
   drawLegendArrow(col1X, rowY, "up");
 
   const upText = makeEl("text", {
     x: col1X + 22,
     y: rowY + 4,
-    "font-size": 13,
-    "text-anchor": "start"
+    "font-size": 13
   });
 
   upText.textContent = "Past upward trend";
   svg.appendChild(upText);
-
-  // ----- DOWN -----
 
   drawLegendArrow(col2X, rowY, "down");
 
   const downText = makeEl("text", {
     x: col2X + 22,
     y: rowY + 4,
-    "font-size": 13,
-    "text-anchor": "start"
+    "font-size": 13
   });
 
   downText.textContent = "Past downward trend";
