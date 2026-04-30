@@ -372,7 +372,7 @@ function drawLegend() {
   const upText = makeEl("text", {
     x: col1X + 20,
     y: rowY + 4,
-    "font-size": 12
+    "font-size": 13
   });
 
   upText.textContent = "Past upward trend";
@@ -383,7 +383,7 @@ function drawLegend() {
   const downText = makeEl("text", {
     x: col2X + 20,
     y: rowY + 4,
-    "font-size": 12
+    "font-size": 13
   });
 
   downText.textContent = "Past downward trend";
