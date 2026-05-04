@@ -122,7 +122,7 @@ function drawPolygonRingGuides(nRings, nSides) {
   }
 }
 
-function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill, cid) {
+function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill) {
   const points = [
     polar(rOuter, angle1),
     polar(rOuter, angle2),
@@ -134,24 +134,42 @@ function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill, cid) {
     points: polygonPoints(points),
     fill: fill,
     stroke: "black",
-    "stroke-width": 0.8,
-    cursor: "pointer"
-  });
-
-  polygon.addEventListener("click", () => {
-    SELECTED_CID = cid;
-    showCidDetail(cid);
-  });
-
-  polygon.addEventListener("mouseenter", () => {
-    polygon.setAttribute("stroke-width", 2);
-  });
-
-  polygon.addEventListener("mouseleave", () => {
-    polygon.setAttribute("stroke-width", 0.8);
+    "stroke-width": 0.8
   });
 
   svg.appendChild(polygon);
+}
+
+function drawClickableCidSector(angle1, angle2, cid) {
+  const points = [
+    polar(radius, angle1),
+    polar(radius, angle2),
+    polar(0, angle2),
+    polar(0, angle1)
+  ];
+
+  const hitArea = makeEl("polygon", {
+    points: polygonPoints(points),
+    fill: "transparent",
+    stroke: "none",
+    cursor: "pointer"
+  });
+
+  hitArea.addEventListener("click", () => {
+    SELECTED_CID = cid;
+    showCidDetail(cid);
+    updatePlot();
+  });
+
+  hitArea.addEventListener("mouseenter", () => {
+    hitArea.setAttribute("fill", "rgba(11, 114, 133, 0.08)");
+  });
+
+  hitArea.addEventListener("mouseleave", () => {
+    hitArea.setAttribute("fill", "transparent");
+  });
+
+  svg.appendChild(hitArea);
 }
 
 function drawCidLabels(angles) {
@@ -190,6 +208,7 @@ function drawCidLabels(angles) {
     text.addEventListener("click", () => {
       SELECTED_CID = cid;
       showCidDetail(cid);
+      updatePlot();
     });
 
     svg.appendChild(text);
@@ -425,11 +444,11 @@ function drawRadial(method, region) {
         rInner,
         angle1,
         angle2,
-        fills[i],
-        cid
+        fills[i]
       );
     }
 
+    drawClickableCidSector(angle1, angle2, cid);
     drawTrendArrow(angle1, angle2, data[cid].trend);
   }
 
