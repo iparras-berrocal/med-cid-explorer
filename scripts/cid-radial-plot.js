@@ -473,11 +473,12 @@ function drawAnomalyPlot(cidInfo) {
 
   const w = 820;
   const h = 250;
-  const margin = { top: 28, right: 45, bottom: 48, left: 65 };
+  const margin = { top: 28, right: 60, bottom: 48, left: 75 };
   const innerW = w - margin.left - margin.right;
   const innerH = h - margin.top - margin.bottom;
 
-  const gwls = Object.keys(cidInfo.gwls || {});
+  const gwls = ["1.5", "2", "3", "4"];
+
   const values = gwls
     .map(g => cidInfo.gwls[g])
     .filter(d => d && d.point !== null);
@@ -511,9 +512,16 @@ function drawAnomalyPlot(cidInfo) {
 
   function add(name, attrs = {}) {
     const el = document.createElementNS("http://www.w3.org/2000/svg", name);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    for (const [k, v] of Object.entries(attrs)) {
+      el.setAttribute(k, v);
+    }
     detailSvg.appendChild(el);
     return el;
+  }
+
+  function fmt(v) {
+    if (v === null || !isFinite(v)) return "NA";
+    return Number(v).toFixed(3).replace(/\.?0+$/, "");
   }
 
   add("line", {
@@ -541,6 +549,13 @@ function drawAnomalyPlot(cidInfo) {
     const y = yScale(i);
     const color = GWL_COLORS[gwl] || "#D73027";
 
+    const tooltip =
+      `GWL ${gwl}°C\n` +
+      `Mean: ${fmt(d.point)} ${cidInfo.unit || ""}\n` +
+      `Min–max: ${fmt(d.min)} to ${fmt(d.max)}\n` +
+      `P10–P90: ${fmt(d.p10)} to ${fmt(d.p90)}\n` +
+      `n = ${d.n}`;
+
     add("text", {
       x: margin.left - 14,
       y: y + 4,
@@ -550,36 +565,42 @@ function drawAnomalyPlot(cidInfo) {
       "font-weight": "600"
     }).textContent = `GWL ${gwl}`;
 
-    add("line", {
+    const minMax = add("line", {
       x1: xScale(d.min),
       y1: y,
       x2: xScale(d.max),
       y2: y,
       stroke: color,
-      "stroke-width": 2
+      "stroke-width": 2,
+      cursor: "pointer"
     });
+    minMax.appendChild(makeSvgTitle(tooltip));
 
-    add("line", {
+    const p1090 = add("line", {
       x1: xScale(d.p10),
       y1: y,
       x2: xScale(d.p90),
       y2: y,
       stroke: color,
       "stroke-width": 6,
-      "stroke-linecap": "round"
+      "stroke-linecap": "round",
+      cursor: "pointer"
     });
+    p1090.appendChild(makeSvgTitle(tooltip));
 
-    add("circle", {
+    const point = add("circle", {
       cx: xScale(d.point),
       cy: y,
       r: 5,
       fill: color,
       stroke: "black",
-      "stroke-width": 0.8
+      "stroke-width": 0.8,
+      cursor: "pointer"
     });
+    point.appendChild(makeSvgTitle(tooltip));
 
     add("text", {
-      x: Math.min(xScale(d.max) + 8, margin.left + innerW + 28),
+      x: Math.min(xScale(d.max) + 8, margin.left + innerW + 35),
       y: y + 4,
       "font-size": 11,
       fill: color
@@ -623,6 +644,12 @@ function drawAnomalyPlot(cidInfo) {
     "font-size": 12,
     fill: "#5b6b7f"
   }).textContent = "Thin line: min–max · thick line: P10–P90 · dot: ensemble mean";
+}
+
+function makeSvgTitle(text) {
+  const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+  title.textContent = text;
+  return title;
 }
 
 function updatePlot() {
