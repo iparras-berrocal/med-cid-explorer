@@ -689,19 +689,19 @@ function drawAnomalyPlot(cidInfo) {
     fill: "#5b6b7f"
   }).textContent = `Anomaly ${cidInfo.unit || ""}`;
 
-  add("text", {
-    x: margin.left,
-    y: 16,
-    "font-size": 12,
-    fill: "#5b6b7f"
-  }).textContent = " Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations" ;
-  
-  add("text", {
+    add("text", {
   x: margin.left,
-  y: 30,
-  "font-size": 11,
+  y: 14,
+  "font-size": 12.5,
   fill: "#6b7c8f"
 }).textContent = "Anomalies are expressed relative to the GWL1 baseline.";
+  
+  add("text", {
+    x: margin.left,
+    y: 30,
+    "font-size": 11.5,
+    fill: "#5b6b7f"
+  }).textContent = " Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations" ;
 }
 
 function makeSvgTitle(text) {
