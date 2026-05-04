@@ -1,4 +1,6 @@
 let CID_DATA = null;
+let CID_ANOMALIES = null;
+let SELECTED_CID = null;
 
 const width = 1050;
 const height = 620;
@@ -7,16 +9,8 @@ const centerX = 360;
 const centerY = 320;
 
 const CID_ORDER = [
-  "SST",
-  "SBT",
-  "Nmonth_sst_p99",
-  "Nmonth_sst_p01",
-  "NMONTH_T20m",
-  "SSS",
-  "MLD",
-  "SI",
-  "Nmonth_ws_p99",
-  "CUIfav"
+  "SST", "SBT", "Nmonth_sst_p99", "Nmonth_sst_p01", "NMONTH_T20m",
+  "SSS", "MLD", "SI", "Nmonth_ws_p99", "CUIfav"
 ];
 
 const CID_LABELS = {
@@ -50,7 +44,16 @@ const IPCC_COLOR_MAP = {
   "Not broadly relevant": "#C9C9C9"
 };
 
+const GWL_COLORS = {
+  "1.5": "#FDB863",
+  "2": "#F46D43",
+  "3": "#D73027",
+  "4": "#7F0000"
+};
+
 const container = document.getElementById("cid-radial-plot");
+const detailPanel = document.getElementById("cid-detail-panel");
+
 container.innerHTML = "";
 
 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -83,10 +86,7 @@ function getCidAngles() {
 
   for (let i = 0; i < CID_ORDER.length; i++) {
     const cid = CID_ORDER[i];
-    angles[cid] = [
-      -108 + i * step,
-      -108 + (i + 1) * step
-    ];
+    angles[cid] = [-108 + i * step, -108 + (i + 1) * step];
   }
 
   return angles;
@@ -113,18 +113,16 @@ function drawPolygonRingGuides(nRings, nSides) {
       pts.push(polar(r, -108 + j * step));
     }
 
-    svg.appendChild(
-      makeEl("polygon", {
-        points: polygonPoints(pts),
-        fill: "none",
-        stroke: "lightgrey",
-        "stroke-width": 1
-      })
-    );
+    svg.appendChild(makeEl("polygon", {
+      points: polygonPoints(pts),
+      fill: "none",
+      stroke: "lightgrey",
+      "stroke-width": 1
+    }));
   }
 }
 
-function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill) {
+function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill, cid) {
   const points = [
     polar(rOuter, angle1),
     polar(rOuter, angle2),
@@ -132,14 +130,28 @@ function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill) {
     polar(rInner, angle1)
   ];
 
-  svg.appendChild(
-    makeEl("polygon", {
-      points: polygonPoints(points),
-      fill: fill,
-      stroke: "black",
-      "stroke-width": 0.8
-    })
-  );
+  const polygon = makeEl("polygon", {
+    points: polygonPoints(points),
+    fill: fill,
+    stroke: "black",
+    "stroke-width": 0.8,
+    cursor: "pointer"
+  });
+
+  polygon.addEventListener("click", () => {
+    SELECTED_CID = cid;
+    showCidDetail(cid);
+  });
+
+  polygon.addEventListener("mouseenter", () => {
+    polygon.setAttribute("stroke-width", 2);
+  });
+
+  polygon.addEventListener("mouseleave", () => {
+    polygon.setAttribute("stroke-width", 0.8);
+  });
+
+  svg.appendChild(polygon);
 }
 
 function drawCidLabels(angles) {
@@ -169,10 +181,17 @@ function drawCidLabels(angles) {
       "dominant-baseline": "middle",
       "font-size": 14,
       "font-weight": "bold",
-      fill: "gray"
+      fill: cid === SELECTED_CID ? "#075969" : "gray",
+      cursor: "pointer"
     });
 
     text.textContent = CID_LABELS[cid] || cid;
+
+    text.addEventListener("click", () => {
+      SELECTED_CID = cid;
+      showCidDetail(cid);
+    });
+
     svg.appendChild(text);
   }
 }
@@ -212,21 +231,18 @@ function drawTrendArrow(angle1, angle2, trend) {
 
   const arrowAngle = trend.direction === "up" ? -45 : 45;
   const len = 22;
-
   const dx = Math.cos(arrowAngle * Math.PI / 180) * len;
   const dy = Math.sin(arrowAngle * Math.PI / 180) * len;
 
-  svg.appendChild(
-    makeEl("line", {
-      x1: c.x - dx / 2,
-      y1: c.y - dy / 2,
-      x2: c.x + dx / 2,
-      y2: c.y + dy / 2,
-      stroke: "black",
-      "stroke-width": 1.6,
-      "marker-end": "url(#arrowhead)"
-    })
-  );
+  svg.appendChild(makeEl("line", {
+    x1: c.x - dx / 2,
+    y1: c.y - dy / 2,
+    x2: c.x + dx / 2,
+    y2: c.y + dy / 2,
+    stroke: "black",
+    "stroke-width": 1.6,
+    "marker-end": "url(#arrowhead)"
+  }));
 }
 
 function addArrowMarker() {
@@ -241,12 +257,10 @@ function addArrowMarker() {
     orient: "auto"
   });
 
-  marker.appendChild(
-    makeEl("polygon", {
-      points: "0 0, 8 3, 0 6",
-      fill: "black"
-    })
-  );
+  marker.appendChild(makeEl("polygon", {
+    points: "0 0, 8 3, 0 6",
+    fill: "black"
+  }));
 
   defs.appendChild(marker);
   svg.appendChild(defs);
@@ -255,21 +269,18 @@ function addArrowMarker() {
 function drawLegendArrow(x, y, direction) {
   const angle = direction === "up" ? -45 : 45;
   const len = 16;
-
   const dx = Math.cos(angle * Math.PI / 180) * len;
   const dy = Math.sin(angle * Math.PI / 180) * len;
 
-  svg.appendChild(
-    makeEl("line", {
-      x1: x - dx / 2,
-      y1: y - dy / 2,
-      x2: x + dx / 2,
-      y2: y + dy / 2,
-      stroke: "black",
-      "stroke-width": 1.5,
-      "marker-end": "url(#arrowhead)"
-    })
-  );
+  svg.appendChild(makeEl("line", {
+    x1: x - dx / 2,
+    y1: y - dy / 2,
+    x2: x + dx / 2,
+    y2: y + dy / 2,
+    stroke: "black",
+    "stroke-width": 1.5,
+    "marker-end": "url(#arrowhead)"
+  }));
 }
 
 function drawTitle(region) {
@@ -290,17 +301,15 @@ function drawLegend() {
   const x = 690;
   let y = 170;
 
-  svg.appendChild(
-    makeEl("rect", {
-      x: x - 25,
-      y: y - 40,
-      width: 350,
-      height: 190,
-      fill: "white",
-      stroke: "#cccccc",
-      "stroke-width": 1
-    })
-  );
+  svg.appendChild(makeEl("rect", {
+    x: x - 25,
+    y: y - 40,
+    width: 350,
+    height: 190,
+    fill: "white",
+    stroke: "#cccccc",
+    "stroke-width": 1
+  }));
 
   const title = makeEl("text", {
     x,
@@ -315,17 +324,15 @@ function drawLegend() {
   y += 4;
 
   for (const label of LIKE_ORDER) {
-    svg.appendChild(
-      makeEl("rect", {
-        x,
-        y,
-        width: 28,
-        height: 13,
-        fill: IPCC_COLOR_MAP[label],
-        stroke: "black",
-        "stroke-width": 0.8
-      })
-    );
+    svg.appendChild(makeEl("rect", {
+      x,
+      y,
+      width: 28,
+      height: 13,
+      fill: IPCC_COLOR_MAP[label],
+      stroke: "black",
+      "stroke-width": 0.8
+    }));
 
     const text = makeEl("text", {
       x: x + 42,
@@ -341,17 +348,15 @@ function drawLegend() {
 
   const box2Y = 370;
 
-  svg.appendChild(
-    makeEl("rect", {
-      x: x - 25,
-      y: box2Y - 30,
-      width: 350,
-      height: 72,
-      fill: "white",
-      stroke: "#cccccc",
-      "stroke-width": 1
-    })
-  );
+  svg.appendChild(makeEl("rect", {
+    x: x - 25,
+    y: box2Y - 30,
+    width: 350,
+    height: 72,
+    fill: "white",
+    stroke: "#cccccc",
+    "stroke-width": 1
+  }));
 
   const title2 = makeEl("text", {
     x,
@@ -420,7 +425,8 @@ function drawRadial(method, region) {
         rInner,
         angle1,
         angle2,
-        fills[i]
+        fills[i],
+        cid
       );
     }
 
@@ -432,17 +438,211 @@ function drawRadial(method, region) {
   drawLegend();
 }
 
+function formatMethod(method) {
+  return method.replace("method_", "Method ").toUpperCase();
+}
+
+function showCidDetail(cid) {
+  if (!CID_ANOMALIES || !detailPanel) return;
+
+  const method = document.getElementById("cid-method").value;
+  const region = document.getElementById("cid-region").value;
+
+  const cidInfo = CID_ANOMALIES?.[method]?.[region]?.[cid];
+
+  if (!cidInfo) {
+    detailPanel.innerHTML = `
+      <h3>${CID_LABELS[cid] || cid}</h3>
+      <p>No anomaly data available for this CID, method and region.</p>
+    `;
+    return;
+  }
+
+  detailPanel.innerHTML = `
+    <h3>${CID_LABELS[cid] || cid}</h3>
+    <p><strong>Region:</strong> ${region} · <strong>Method:</strong> ${formatMethod(method)} · <strong>Units:</strong> ${cidInfo.unit || ""}</p>
+    <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
+  `;
+
+  drawAnomalyPlot(cidInfo);
+}
+
+function drawAnomalyPlot(cidInfo) {
+  const plot = document.getElementById("cid-anomaly-plot");
+  plot.innerHTML = "";
+
+  const w = 820;
+  const h = 250;
+  const margin = { top: 28, right: 45, bottom: 48, left: 65 };
+  const innerW = w - margin.left - margin.right;
+  const innerH = h - margin.top - margin.bottom;
+
+  const gwls = Object.keys(cidInfo.gwls || {});
+  const values = gwls
+    .map(g => cidInfo.gwls[g])
+    .filter(d => d && d.point !== null);
+
+  if (values.length === 0) {
+    plot.innerHTML = "<p>No valid anomaly values available.</p>";
+    return;
+  }
+
+  const allVals = [];
+  values.forEach(d => {
+    ["min", "max", "p10", "p90", "point"].forEach(k => {
+      if (d[k] !== null && isFinite(d[k])) allVals.push(d[k]);
+    });
+  });
+
+  const absMax = Math.max(...allVals.map(Math.abs), 0.1);
+  const xMax = absMax * 1.15;
+  const xMin = -xMax;
+
+  const xScale = v => margin.left + ((v - xMin) / (xMax - xMin)) * innerW;
+  const yScale = i => margin.top + (i + 0.5) * (innerH / gwls.length);
+
+  const detailSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  detailSvg.setAttribute("width", w);
+  detailSvg.setAttribute("height", h);
+  detailSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  detailSvg.style.maxWidth = "100%";
+  detailSvg.style.height = "auto";
+  plot.appendChild(detailSvg);
+
+  function add(name, attrs = {}) {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    detailSvg.appendChild(el);
+    return el;
+  }
+
+  add("line", {
+    x1: xScale(0),
+    y1: margin.top,
+    x2: xScale(0),
+    y2: margin.top + innerH,
+    stroke: "#102033",
+    "stroke-width": 1
+  });
+
+  add("line", {
+    x1: margin.left,
+    y1: margin.top + innerH,
+    x2: margin.left + innerW,
+    y2: margin.top + innerH,
+    stroke: "#ccd6e0",
+    "stroke-width": 1
+  });
+
+  gwls.forEach((gwl, i) => {
+    const d = cidInfo.gwls[gwl];
+    if (!d || d.point === null) return;
+
+    const y = yScale(i);
+    const color = GWL_COLORS[gwl] || "#D73027";
+
+    add("text", {
+      x: margin.left - 14,
+      y: y + 4,
+      "text-anchor": "end",
+      "font-size": 13,
+      fill: "#102033",
+      "font-weight": "600"
+    }).textContent = `GWL ${gwl}`;
+
+    add("line", {
+      x1: xScale(d.min),
+      y1: y,
+      x2: xScale(d.max),
+      y2: y,
+      stroke: color,
+      "stroke-width": 2
+    });
+
+    add("line", {
+      x1: xScale(d.p10),
+      y1: y,
+      x2: xScale(d.p90),
+      y2: y,
+      stroke: color,
+      "stroke-width": 6,
+      "stroke-linecap": "round"
+    });
+
+    add("circle", {
+      cx: xScale(d.point),
+      cy: y,
+      r: 5,
+      fill: color,
+      stroke: "black",
+      "stroke-width": 0.8
+    });
+
+    add("text", {
+      x: Math.min(xScale(d.max) + 8, margin.left + innerW + 28),
+      y: y + 4,
+      "font-size": 11,
+      fill: color
+    }).textContent = `n=${d.n}`;
+  });
+
+  const ticks = [-xMax, -xMax / 2, 0, xMax / 2, xMax];
+
+  ticks.forEach(t => {
+    const x = xScale(t);
+
+    add("line", {
+      x1: x,
+      y1: margin.top + innerH,
+      x2: x,
+      y2: margin.top + innerH + 5,
+      stroke: "#102033",
+      "stroke-width": 1
+    });
+
+    add("text", {
+      x,
+      y: margin.top + innerH + 22,
+      "text-anchor": "middle",
+      "font-size": 11,
+      fill: "#5b6b7f"
+    }).textContent = Number(t.toFixed(2)).toString();
+  });
+
+  add("text", {
+    x: margin.left + innerW / 2,
+    y: h - 8,
+    "text-anchor": "middle",
+    "font-size": 12,
+    fill: "#5b6b7f"
+  }).textContent = `Anomaly ${cidInfo.unit || ""}`;
+
+  add("text", {
+    x: margin.left,
+    y: 16,
+    "font-size": 12,
+    fill: "#5b6b7f"
+  }).textContent = "Thin line: min–max · thick line: P10–P90 · dot: ensemble mean";
+}
+
 function updatePlot() {
   const method = document.getElementById("cid-method").value;
   const region = document.getElementById("cid-region").value;
 
   drawRadial(method, region);
+
+  if (SELECTED_CID) {
+    showCidDetail(SELECTED_CID);
+  }
 }
 
-fetch("images/cid_data.json")
-  .then(r => r.json())
-  .then(data => {
-    CID_DATA = data;
+Promise.all([
+  fetch("images/cid_data.json").then(r => r.json()),
+  fetch("images/cid_anomalies.json").then(r => r.json())
+])
+  .then(([cidData, anomalyData]) => {
+    CID_DATA = cidData;
+    CID_ANOMALIES = anomalyData;
 
     document
       .getElementById("cid-method")
