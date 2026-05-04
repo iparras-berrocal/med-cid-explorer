@@ -694,7 +694,7 @@ function drawAnomalyPlot(cidInfo) {
     y: 16,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = "Thin line: min–max · thick line: P10–P90 · dot: ensemble mean";
+  }).textContent = " Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations" ;
 }
 
 function makeSvgTitle(text) {
