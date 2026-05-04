@@ -478,7 +478,11 @@ function showCidDetail(cid) {
   }
 
   detailPanel.innerHTML = `
-    <h3>${CID_LABELS[cid] || cid}</h3>
+    <h3>${CID_LABELS[cid] || cid}
+        <span style="font-size:13px; font-weight:400; color:#5b6b7f; margin-left:8px;">
+        — relative to GWL1 baseline
+        </span>
+    </h3>
     <p><strong>Region:</strong> ${region} · <strong>Method:</strong> ${formatMethod(method)} · <strong>Units:</strong> ${cidInfo.unit || ""}</p>
     <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
   `;
@@ -689,17 +693,10 @@ function drawAnomalyPlot(cidInfo) {
     fill: "#5b6b7f"
   }).textContent = `Anomaly ${cidInfo.unit || ""}`;
 
-    add("text", {
-  x: margin.left,
-  y: 16,
-  "font-size": 12.5,
-  fill: "#6b7c8f"
-}).textContent = "Anomalies are expressed relative to the GWL1 baseline.";
-  
   add("text", {
     x: margin.left,
-    y: 26,
-    "font-size": 11.5,
+    y: 16,
+    "font-size": 12,
     fill: "#5b6b7f"
   }).textContent = " Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations" ;
 }
