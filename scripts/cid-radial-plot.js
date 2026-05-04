@@ -552,9 +552,8 @@ function drawAnomalyPlot(cidInfo) {
     const tooltip =
       `GWL ${gwl}°C\n` +
       `Mean: ${fmt(d.point)} ${cidInfo.unit || ""}\n` +
-      `Min–max: ${fmt(d.min)} to ${fmt(d.max)}\n` +
       `P10–P90: ${fmt(d.p10)} to ${fmt(d.p90)}\n` +
-      `n = ${d.n}`;
+      `Min–max: ${fmt(d.min)} to ${fmt(d.max)}\n`;
 
     add("text", {
       x: margin.left - 14,
