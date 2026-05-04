@@ -15,12 +15,9 @@
       --bg: #f3f7fb;
       --card: #ffffff;
       --line: #d8e3ef;
-      --soft: #eef8fa;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -57,12 +54,10 @@
     }
 
     h1 {
-      max-width: 900px;
       margin: 0 0 14px;
       font-size: clamp(34px, 4.4vw, 56px);
       line-height: 1.04;
       letter-spacing: -0.04em;
-      color: #071426;
     }
 
     .subtitle {
@@ -92,53 +87,37 @@
     .tool-title {
       margin: 0;
       font-size: 22px;
-      letter-spacing: -0.02em;
     }
 
     .tool-description {
       margin: 6px 0 0;
       max-width: 620px;
       color: var(--muted);
-      line-height: 1.55;
       font-size: 14px;
     }
 
     .controls {
       display: flex;
-      flex-wrap: wrap;
       gap: 16px;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 18px;
+      padding: 16px;
       background: #f8fbfe;
       border: 1px solid var(--line);
       border-radius: 16px;
-      min-width: 360px;
     }
 
     .control {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #18324a;
-      font-size: 14px;
       font-weight: 800;
+      font-size: 14px;
     }
 
     select {
-      min-width: 175px;
       padding: 9px 12px;
-      border: 1px solid #b8c8d9;
       border-radius: 10px;
-      background: white;
-      color: var(--ink);
+      border: 1px solid #b8c8d9;
       font-size: 15px;
-      box-shadow: 0 1px 2px rgba(16, 32, 51, 0.04);
-    }
-
-    select:focus {
-      outline: 3px solid rgba(11, 114, 133, 0.16);
-      border-color: var(--accent);
     }
 
     .plot-card {
@@ -152,177 +131,104 @@
       display: flex;
       justify-content: center;
       width: 100%;
-      overflow-x: auto;
     }
 
-    .tool-note {
-      margin: 14px 0 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .info-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 22px;
-    }
-
-    .info-box {
-      background: #ffffff;
+    .cid-detail-panel {
+      max-width: 900px;
+      margin: 18px auto 6px;
+      padding: 18px 20px;
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 18px;
+      background: #f8fbfe;
     }
 
-    .info-box h3 {
+    .cid-detail-panel h3 {
       margin: 0 0 8px;
+      font-size: 18px;
       color: var(--accent-dark);
-      font-size: 15px;
     }
 
-    .info-box p {
+    .cid-detail-panel p {
       margin: 0;
+      font-size: 14px;
       color: var(--muted);
-      font-size: 13.5px;
-      line-height: 1.5;
     }
 
     footer {
       margin-top: 26px;
       text-align: center;
-      color: var(--muted);
       font-size: 13px;
-    }
-
-    @media (max-width: 900px) {
-      .tool-header {
-        flex-direction: column;
-      }
-
-      .controls {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .info-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .page {
-        padding: 20px 12px 40px;
-      }
-
-      .hero {
-        padding: 26px 22px;
-      }
-
-      .tool-shell {
-        padding: 16px;
-      }
-
-      .control {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      select {
-        min-width: 185px;
-      }
+      color: var(--muted);
     }
   </style>
 </head>
 
 <body>
-  <main class="page">
 
-    <section class="hero">
-      <div class="tag">Med-CORDEX initiative</div>
+<main class="page">
 
-      <h1>Mediterranean Climatic Impact-Drivers (CIDs) Explorer</h1>
+  <section class="hero">
+    <div class="tag">Med-CORDEX initiative</div>
+    <h1>Mediterranean Climatic Impact-Drivers (CIDs) Explorer</h1>
+    <p class="subtitle">
+      Interactive visualization of Climatic Impact-Drivers across Mediterranean regions,
+      warming levels and filtering methods.
+    </p>
+  </section>
 
-      <p class="subtitle">
-        Interactive visualization of Climatic Impact-Drivers across Mediterranean regions,
-        warming levels and filtering methods from Parras-Berrocal et al.
-      </p>
-    </section>
+  <section class="tool-shell">
 
-    <section class="tool-shell">
-      <div class="tool-header">
-        <div>
-          <h2 class="tool-title">CID radial assessment</h2>
-          <p class="tool-description">
-            Select a filtering method and region to explore the level of confidence in projected
-            changes and the associated observational trend evidence.
-          </p>
+    <div class="tool-header">
+      <div>
+        <h2 class="tool-title">CID Explorer</h2>
+        <p class="tool-description">
+          Select a method and region, then click on a CID sector to explore detailed anomaly information.
+        </p>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          Method
+          <select id="cid-method">
+            <option value="method_A">Method A</option>
+            <option value="method_B">Method B</option>
+            <option value="method_C">Method C</option>
+          </select>
         </div>
 
-        <div class="controls">
-          <div class="control">
-            <label for="cid-method">Method</label>
-            <select id="cid-method">
-              <option value="method_A">Method A</option>
-              <option value="method_B">Method B</option>
-              <option value="method_C">Method C</option>
-            </select>
-          </div>
-
-          <div class="control">
-            <label for="cid-region">Region</label>
-            <select id="cid-region">
-              <option>Mediterranean Sea</option>
-              <option>Western Med</option>
-              <option>Eastern Med</option>
-              <option>Adriatic Sea</option>
-              <option>Aegean Sea</option>
-              <option>Continental coastline</option>
-              <option>Island coastline</option>
-            </select>
-          </div>
+        <div class="control">
+          Region
+          <select id="cid-region">
+            <option>Mediterranean Sea</option>
+            <option>Western Med</option>
+            <option>Eastern Med</option>
+            <option>Adriatic Sea</option>
+            <option>Aegean Sea</option>
+            <option>Continental coastline</option>
+            <option>Island coastline</option>
+          </select>
         </div>
       </div>
+    </div>
 
-      <div class="plot-card">
-        <div id="cid-radial-plot"></div>
+    <div class="plot-card">
+      <div id="cid-radial-plot"></div>
+
+      <div id="cid-detail-panel" class="cid-detail-panel">
+        <h3>Select a CID</h3>
+        <p>Click on a sector of the radial diagram to display anomaly information.</p>
       </div>
+    </div>
 
-      <p class="tool-note">
-        The outer ring represents historical/observational evidence; inner rings show increasing global warming levels.
-      </p>
-    </section>
+  </section>
 
-    <section class="info-row">
-      <div class="info-box">
-        <h3>Methods</h3>
-        <p>
-          Compare alternative filtering rules used to assess robustness and confidence in CID changes.
-        </p>
-      </div>
+  <footer>
+    Mediterranean CIDs Explorer · Interactive web tool
+  </footer>
 
-      <div class="info-box">
-        <h3>Regions</h3>
-        <p>
-          Explore the Mediterranean basin and selected sub-regions, including western, eastern and coastal domains.
-        </p>
-      </div>
+</main>
 
-      <div class="info-box">
-        <h3>Confidence levels</h3>
-        <p>
-          Colors summarize confidence in the direction and relevance of projected future changes.
-        </p>
-      </div>
-    </section>
+<script src="scripts/cid-radial-plot.js"></script>
 
-    <footer>
-      Mediterranean CIDs Explorer · Interactive web tool
-    </footer>
-
-  </main>
-
-  <script src="scripts/cid-radial-plot.js"></script>
 </body>
 </html>
