@@ -553,7 +553,7 @@ function drawAnomalyPlot(cidInfo) {
       `GWL ${gwl}°C\n` +
       `Mean: ${fmt(d.point)} ${cidInfo.unit || ""}\n` +
       `P10–P90: ${fmt(d.p10)} to ${fmt(d.p90)}\n` +
-      `Min–max: ${fmt(d.min)} to ${fmt(d.max)}\n`;
+      `Min–max: ${fmt(d.min)} to ${fmt(d.max)}`;
 
     add("text", {
       x: margin.left - 14,
@@ -571,9 +571,22 @@ function drawAnomalyPlot(cidInfo) {
       y2: y,
       stroke: color,
       "stroke-width": 2,
+      opacity: 0.85,
       cursor: "pointer"
     });
+
     minMax.appendChild(makeSvgTitle(tooltip));
+
+    minMax.addEventListener("mouseenter", () => {
+      minMax.style.transition = "all 0.15s ease";
+      minMax.setAttribute("stroke-width", 3);
+      minMax.setAttribute("opacity", 1);
+    });
+
+    minMax.addEventListener("mouseleave", () => {
+      minMax.setAttribute("stroke-width", 2);
+      minMax.setAttribute("opacity", 0.85);
+    });
 
     const p1090 = add("line", {
       x1: xScale(d.p10),
@@ -585,7 +598,17 @@ function drawAnomalyPlot(cidInfo) {
       "stroke-linecap": "round",
       cursor: "pointer"
     });
+
     p1090.appendChild(makeSvgTitle(tooltip));
+
+    p1090.addEventListener("mouseenter", () => {
+      p1090.style.transition = "all 0.15s ease";
+      p1090.setAttribute("stroke-width", 8);
+    });
+
+    p1090.addEventListener("mouseleave", () => {
+      p1090.setAttribute("stroke-width", 6);
+    });
 
     const point = add("circle", {
       cx: xScale(d.point),
@@ -596,7 +619,17 @@ function drawAnomalyPlot(cidInfo) {
       "stroke-width": 0.8,
       cursor: "pointer"
     });
+
     point.appendChild(makeSvgTitle(tooltip));
+
+    point.addEventListener("mouseenter", () => {
+      point.style.transition = "all 0.15s ease";
+      point.setAttribute("r", 6.5);
+    });
+
+    point.addEventListener("mouseleave", () => {
+      point.setAttribute("r", 5);
+    });
 
     add("text", {
       x: Math.min(xScale(d.max) + 8, margin.left + innerW + 35),
