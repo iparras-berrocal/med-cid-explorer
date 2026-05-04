@@ -44,13 +44,25 @@
     }
 
     .tag {
-      display: inline-block;
       margin-bottom: 14px;
       color: var(--accent);
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .tag-with-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag-logo {
+      height: 16px;
+      width: auto;
+      object-fit: contain;
+      display: block;
     }
 
     h1 {
@@ -223,8 +235,8 @@
 
   <section class="hero">
     <div class="tag tag-with-logo">
-      <img src="images/med-cordex-logo.png" alt="Med-CORDEX logo" class="tag-logo">
-      <span>Med-CORDEX initiative</span>
+      <img src="images/med-cordex-logo.png" alt="med-CORDEX logo" class="tag-logo">
+      <span>med-CORDEX initiative</span>
     </div>
 
     <h1>Mediterranean Climatic Impact-Drivers (CIDs) Explorer</h1>
