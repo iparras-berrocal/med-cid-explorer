@@ -57,6 +57,26 @@ const IPCC_COLOR_MAP = {
   "Not broadly relevant": "#C9C9C9"
 };
 
+const CONFIDENCE_DEFINITIONS = {
+  "High confidence of increase":
+    "≥80% agreement on direction of change and ≥80% agreement on significance of change; positive change.",
+
+  "Low confidence of increase":
+    "≥80% agreement on direction of change but <80% agreement on significance of change; positive change.",
+
+  "Low confidence in direction of change":
+    "<80% agreement on direction of change.",
+
+  "Low confidence of decrease":
+    "≥80% agreement on direction of change but <80% agreement on significance of change; negative change.",
+
+  "High confidence of decrease":
+    "≥80% agreement on direction of change and ≥80% agreement on significance of change; negative change.",
+
+  "Not broadly relevant":
+    "CID not broadly relevant for the selected region or context."
+};
+
 const GWL_COLORS = {
   "1.5": "#FDB863",
   "2": "#F46D43",
@@ -357,27 +377,33 @@ function drawLegend() {
   y += 4;
 
   for (const label of LIKE_ORDER) {
-    svg.appendChild(makeEl("rect", {
-      x,
-      y,
-      width: 28,
-      height: 13,
-      fill: IPCC_COLOR_MAP[label],
-      stroke: "black",
-      "stroke-width": 0.8
-    }));
+  const swatch = makeEl("rect", {
+    x,
+    y,
+    width: 28,
+    height: 13,
+    fill: IPCC_COLOR_MAP[label],
+    stroke: "black",
+    "stroke-width": 0.8,
+    cursor: "help"
+  });
 
-    const text = makeEl("text", {
-      x: x + 42,
-      y: y + 11,
-      "font-size": 14
-    });
+  swatch.appendChild(makeSvgTitle(CONFIDENCE_DEFINITIONS[label] || ""));
+  svg.appendChild(swatch);
 
-    text.textContent = label;
-    svg.appendChild(text);
+  const text = makeEl("text", {
+    x: x + 42,
+    y: y + 11,
+    "font-size": 14,
+    cursor: "help"
+  });
 
-    y += 23;
-  }
+  text.textContent = label;
+  text.appendChild(makeSvgTitle(CONFIDENCE_DEFINITIONS[label] || ""));
+  svg.appendChild(text);
+
+  y += 23;
+}
 
   const box2Y = 370;
 
