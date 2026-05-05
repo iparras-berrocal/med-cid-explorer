@@ -217,6 +217,7 @@ function drawCidLabels(angles) {
     });
 
     text.textContent = CID_LABELS[cid] || cid;
+    text.appendChild(makeSvgTitle(CID_DEFINITIONS[cid] || "Definition not available."));
 
     text.addEventListener("click", () => {
       SELECTED_CID = cid;
