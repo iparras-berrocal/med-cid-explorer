@@ -567,7 +567,7 @@ function drawAnomalyPlot(cidInfo) {
 
   function fmt(v) {
     if (v === null || !isFinite(v)) return "NA";
-    return Number(v).toFixed(1);
+    return Number(v).toFixed(2);
   }
 
   add("line", {
