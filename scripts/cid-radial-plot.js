@@ -33,7 +33,7 @@ const CID_DEFINITIONS = {
   Nmonth_sst_p01: "Number of months per year with sea surface temperature below the 1st percentile.",
   NMONTH_T20m: "Number of months per year with temperature at 20 m depth above 25°C.",
   SSS: "Sea Surface Salinity.",
-  MLD: "Maximum Mixed Layer Depth.",
+  MLD: "Annual maximum Mixed Layer Depth.",
   SI: "Stratification Index.",
   Nmonth_ws_p99: "Number of months per year with wind stress above the 99th percentile.",
   CUIfav: "Favorable Coastal Upwelling Index."
