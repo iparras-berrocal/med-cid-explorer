@@ -97,12 +97,51 @@ svg.style.maxWidth = "100%";
 svg.style.height = "auto";
 container.appendChild(svg);
 
+const tooltipDiv = document.createElement("div");
+tooltipDiv.style.position = "fixed";
+tooltipDiv.style.pointerEvents = "none";
+tooltipDiv.style.background = "rgba(16, 32, 51, 0.96)";
+tooltipDiv.style.color = "white";
+tooltipDiv.style.padding = "8px 10px";
+tooltipDiv.style.borderRadius = "8px";
+tooltipDiv.style.fontSize = "12px";
+tooltipDiv.style.lineHeight = "1.35";
+tooltipDiv.style.maxWidth = "320px";
+tooltipDiv.style.zIndex = "9999";
+tooltipDiv.style.opacity = "0";
+tooltipDiv.style.transition = "opacity 0.12s ease";
+document.body.appendChild(tooltipDiv);
+
+function addHtmlTooltip(el, text) {
+  el.addEventListener("mouseenter", event => {
+    tooltipDiv.textContent = text;
+    tooltipDiv.style.opacity = "1";
+    tooltipDiv.style.left = `${event.clientX + 14}px`;
+    tooltipDiv.style.top = `${event.clientY + 14}px`;
+  });
+
+  el.addEventListener("mousemove", event => {
+    tooltipDiv.style.left = `${event.clientX + 14}px`;
+    tooltipDiv.style.top = `${event.clientY + 14}px`;
+  });
+
+  el.addEventListener("mouseleave", () => {
+    tooltipDiv.style.opacity = "0";
+  });
+}
+
 function makeEl(name, attrs = {}) {
   const el = document.createElementNS("http://www.w3.org/2000/svg", name);
   for (const [key, value] of Object.entries(attrs)) {
     el.setAttribute(key, value);
   }
   return el;
+}
+
+function makeSvgTitle(text) {
+  const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+  title.textContent = text;
+  return title;
 }
 
 function polar(r, angleDeg) {
@@ -163,14 +202,12 @@ function drawSectorPolygon(rOuter, rInner, angle1, angle2, fill) {
     polar(rInner, angle1)
   ];
 
-  const polygon = makeEl("polygon", {
+  svg.appendChild(makeEl("polygon", {
     points: polygonPoints(points),
-    fill: fill,
+    fill,
     stroke: "black",
     "stroke-width": 0.8
-  });
-
-  svg.appendChild(polygon);
+  }));
 }
 
 function drawClickableCidSector(angle1, angle2, cid) {
@@ -202,6 +239,7 @@ function drawClickableCidSector(angle1, angle2, cid) {
     hitArea.setAttribute("fill", "transparent");
   });
 
+  addHtmlTooltip(hitArea, CID_DEFINITIONS[cid] || "Definition not available.");
   svg.appendChild(hitArea);
 }
 
@@ -237,7 +275,6 @@ function drawCidLabels(angles) {
     });
 
     text.textContent = CID_LABELS[cid] || cid;
-    text.appendChild(makeSvgTitle(CID_DEFINITIONS[cid] || "Definition not available."));
 
     text.addEventListener("click", () => {
       SELECTED_CID = cid;
@@ -245,6 +282,7 @@ function drawCidLabels(angles) {
       updatePlot();
     });
 
+    addHtmlTooltip(text, CID_DEFINITIONS[cid] || "Definition not available.");
     svg.appendChild(text);
   }
 }
@@ -377,33 +415,35 @@ function drawLegend() {
   y += 4;
 
   for (const label of LIKE_ORDER) {
-  const swatch = makeEl("rect", {
-    x,
-    y,
-    width: 28,
-    height: 13,
-    fill: IPCC_COLOR_MAP[label],
-    stroke: "black",
-    "stroke-width": 0.8,
-    cursor: "help"
-  });
+    const definition = CONFIDENCE_DEFINITIONS[label] || "";
 
-  swatch.appendChild(makeSvgTitle(CONFIDENCE_DEFINITIONS[label] || ""));
-  svg.appendChild(swatch);
+    const swatch = makeEl("rect", {
+      x,
+      y,
+      width: 28,
+      height: 13,
+      fill: IPCC_COLOR_MAP[label],
+      stroke: "black",
+      "stroke-width": 0.8,
+      cursor: "help"
+    });
 
-  const text = makeEl("text", {
-    x: x + 42,
-    y: y + 11,
-    "font-size": 14,
-    cursor: "help"
-  });
+    addHtmlTooltip(swatch, definition);
+    svg.appendChild(swatch);
 
-  text.textContent = label;
-  text.appendChild(makeSvgTitle(CONFIDENCE_DEFINITIONS[label] || ""));
-  svg.appendChild(text);
+    const text = makeEl("text", {
+      x: x + 42,
+      y: y + 11,
+      "font-size": 14,
+      cursor: "help"
+    });
 
-  y += 23;
-}
+    text.textContent = label;
+    addHtmlTooltip(text, definition);
+    svg.appendChild(text);
+
+    y += 23;
+  }
 
   const box2Y = 370;
 
@@ -479,13 +519,7 @@ function drawRadial(method, region) {
       const rOuter = radius - i * ringSize;
       const rInner = radius - (i + 1) * ringSize;
 
-      drawSectorPolygon(
-        rOuter,
-        rInner,
-        angle1,
-        angle2,
-        fills[i]
-      );
+      drawSectorPolygon(rOuter, rInner, angle1, angle2, fills[i]);
     }
 
     drawClickableCidSector(angle1, angle2, cid);
@@ -506,7 +540,6 @@ function showCidDetail(cid) {
 
   const method = document.getElementById("cid-method").value;
   const region = document.getElementById("cid-region").value;
-
   const cidInfo = CID_ANOMALIES?.[method]?.[region]?.[cid];
 
   if (!cidInfo) {
@@ -748,13 +781,7 @@ function drawAnomalyPlot(cidInfo) {
     y: 16,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = " Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations" ;
-}
-
-function makeSvgTitle(text) {
-  const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
-  title.textContent = text;
-  return title;
+  }).textContent = "Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations";
 }
 
 function updatePlot() {
