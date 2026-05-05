@@ -370,16 +370,16 @@ function drawLegendArrow(x, y, direction) {
   const dx = Math.cos(angle * Math.PI / 180) * len;
   const dy = Math.sin(angle * Math.PI / 180) * len;
 
-  svg.appendChild(makeEl("line", {
+  const line = makeEl("line", {
     x1: x - dx / 2,
     y1: y - dy / 2,
     x2: x + dx / 2,
     y2: y + dy / 2,
     stroke: "black",
     "stroke-width": 1.5,
-    "marker-end": "url(#arrowhead)"
+    "marker-end": "url(#arrowhead)",
     cursor: "help"
-  }));
+  });
 
   svg.appendChild(line);
   return line;
@@ -425,6 +425,7 @@ function drawLegend() {
 
   y += 4;
 
+  // --- Confidence legend ---
   for (const label of LIKE_ORDER) {
     const definition = CONFIDENCE_DEFINITIONS[label] || "";
 
@@ -456,6 +457,7 @@ function drawLegend() {
     y += 23;
   }
 
+  // --- Trend legend ---
   const box2Y = 370;
 
   svg.appendChild(makeEl("rect", {
@@ -482,66 +484,35 @@ function drawLegend() {
   const col2X = x + 160;
   const rowY = box2Y + 22;
 
-  drawLegendArrow(col1X, rowY, "up");
+  // --- Upward trend ---
+  const upArrow = drawLegendArrow(col1X, rowY, "up");
+  addHtmlTooltip(upArrow, TREND_DEFINITIONS["Past upward trend"]);
 
   const upText = makeEl("text", {
     x: col1X + 20,
     y: rowY + 4,
-    "font-size": 14
+    "font-size": 14,
+    cursor: "help"
   });
 
   upText.textContent = "Past upward trend";
   addHtmlTooltip(upText, TREND_DEFINITIONS["Past upward trend"]);
+  svg.appendChild(upText);
 
-
-  drawLegendArrow(col2X, rowY, "down");
+  // --- Downward trend ---
+  const downArrow = drawLegendArrow(col2X, rowY, "down");
+  addHtmlTooltip(downArrow, TREND_DEFINITIONS["Past downward trend"]);
 
   const downText = makeEl("text", {
     x: col2X + 20,
     y: rowY + 4,
-    "font-size": 14
+    "font-size": 14,
+    cursor: "help"
   });
 
   downText.textContent = "Past downward trend";
   addHtmlTooltip(downText, TREND_DEFINITIONS["Past downward trend"]);
-
-}
-
-function drawRadial(method, region) {
-  clearSvg();
-  addArrowMarker();
-
-  const meta = CID_DATA.metadata;
-  const angles = getCidAngles();
-  const gwls = meta.gwls;
-  const data = CID_DATA.data[method][region];
-
-  const nRings = gwls.length;
-  const ringSize = radius / nRings;
-
-  drawTitle(region);
-  drawPolygonRingGuides(nRings, 10);
-
-  for (const cid of CID_ORDER) {
-    if (!data[cid]) continue;
-
-    const fills = data[cid].fills;
-    const [angle1, angle2] = angles[cid];
-
-    for (let i = 0; i < fills.length; i++) {
-      const rOuter = radius - i * ringSize;
-      const rInner = radius - (i + 1) * ringSize;
-
-      drawSectorPolygon(rOuter, rInner, angle1, angle2, fills[i]);
-    }
-
-    drawClickableCidSector(angle1, angle2, cid);
-    drawTrendArrow(angle1, angle2, data[cid].trend);
-  }
-
-  drawCidLabels(angles);
-  drawGwlLabels(gwls);
-  drawLegend();
+  svg.appendChild(downText);
 }
 
 function formatMethod(method) {
