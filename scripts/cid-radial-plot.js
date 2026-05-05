@@ -790,7 +790,7 @@ function drawAnomalyPlot(cidInfo) {
       x,
       y: margin.top + innerH + 22,
       "text-anchor": "middle",
-      "font-size": 11,
+      "font-size": 13,
       fill: "#5b6b7f"
     }).textContent = Number(t.toFixed(2)).toString();
   });
@@ -799,14 +799,14 @@ function drawAnomalyPlot(cidInfo) {
     x: margin.left + innerW / 2,
     y: h - 8,
     "text-anchor": "middle",
-    "font-size": 12,
+    "font-size": 14,
     fill: "#5b6b7f"
   }).textContent = `Anomaly ${cidInfo.unit || ""}`;
 
   add("text", {
     x: margin.left,
     y: 16,
-    "font-size": 12,
+    "font-size": 13,
     fill: "#5b6b7f"
   }).textContent = "Min–Max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations";
 }
