@@ -808,7 +808,7 @@ function drawAnomalyPlot(cidInfo) {
     y: 16,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = "Min–max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations";
+  }).textContent = "Min–Max (thin), P10–P90 range (thick), ensemble mean (dot), n: number of simulations";
 }
 
 function updatePlot() {
