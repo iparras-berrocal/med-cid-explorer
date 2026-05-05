@@ -27,16 +27,16 @@ const CID_LABELS = {
 };
 
 const CID_DEFINITIONS = {
-  SST: "Sea Surface Temperature.",
-  SBT: "Sea Bottom Temperature.",
-  Nmonth_sst_p99: "Number of months per year with sea surface temperature above the 99th percentile.",
-  Nmonth_sst_p01: "Number of months per year with sea surface temperature below the 1st percentile.",
-  NMONTH_T20m: "Number of months per year with temperature at 20 m depth above 25°C.",
-  SSS: "Sea Surface Salinity.",
-  MLD: "Annual Maximum Mixed Layer Depth.",
-  SI: "Stratification Index.",
-  Nmonth_ws_p99: "Number of months per year with wind stress above the 99th percentile.",
-  CUIfav: "Favorable Coastal Upwelling Index."
+  SST: "Sea Surface Temperature",
+  SBT: "Sea Bottom Temperature",
+  Nmonth_sst_p99: "Number of months per year with sea surface temperature above the 99th percentile",
+  Nmonth_sst_p01: "Number of months per year with sea surface temperature below the 1st percentile",
+  NMONTH_T20m: "Number of months per year with temperature at 20 m depth above 25°C",
+  SSS: "Sea Surface Salinity",
+  MLD: "Annual Maximum Mixed Layer Depth",
+  SI: "Stratification Index",
+  Nmonth_ws_p99: "Number of months per year with wind stress above the 99th percentile",
+  CUIfav: "Favorable Coastal Upwelling Index"
 };
 
 const LIKE_ORDER = [
