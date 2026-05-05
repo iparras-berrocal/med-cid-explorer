@@ -26,6 +26,19 @@ const CID_LABELS = {
   NMONTH_T20m: "NM T₂₀ₘ >25°C"
 };
 
+const CID_DEFINITIONS = {
+  SST: "Sea Surface Temperature.",
+  SBT: "Sea Bottom Temperature.",
+  Nmonth_sst_p99: "Number of months per year with sea surface temperature above the 99th percentile.",
+  Nmonth_sst_p01: "Number of months per year with sea surface temperature below the 1st percentile.",
+  NMONTH_T20m: "Number of months per year with temperature at 20 m depth above 25°C.",
+  SSS: "Sea Surface Salinity.",
+  MLD: "Maximum Mixed Layer Depth.",
+  SI: "Stratification Index.",
+  Nmonth_ws_p99: "Number of months per year with wind stress above the 99th percentile.",
+  CUIfav: "Favorable Coastal Upwelling Index."
+};
+
 const LIKE_ORDER = [
   "High confidence of increase",
   "Low confidence of increase",
@@ -462,32 +475,35 @@ function formatMethod(method) {
 }
 
 function showCidDetail(cid) {
-  if (!CID_ANOMALIES || !detailPanel) return;
-
-  const method = document.getElementById("cid-method").value;
-  const region = document.getElementById("cid-region").value;
-
-  const cidInfo = CID_ANOMALIES?.[method]?.[region]?.[cid];
-
   if (!cidInfo) {
-    detailPanel.innerHTML = `
-      <h3>${CID_LABELS[cid] || cid}</h3>
-      <p>No anomaly data available for this CID, method and region.</p>
-    `;
-    return;
-  }
-
   detailPanel.innerHTML = `
-    <h3>${CID_LABELS[cid] || cid}
-        <span style="font-size:13px; font-weight:400; color:#5b6b7f; margin-left:8px;">
-        — relative to GWL1 baseline
-        </span>
-    </h3>
-    <p><strong>Region:</strong> ${region} · <strong>Method:</strong> ${formatMethod(method)} · <strong>Units:</strong> ${cidInfo.unit || ""}</p>
-    <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
+    <h3>${CID_LABELS[cid] || cid}</h3>
+    <p><strong>Definition:</strong> ${CID_DEFINITIONS[cid] || "Definition not available."}</p>
+    <p style="margin-top:6px;">No anomaly data available for this CID, method and region.</p>
   `;
+  return;
+}
 
-  drawAnomalyPlot(cidInfo);
+detailPanel.innerHTML = `
+  <h3>
+    ${CID_LABELS[cid] || cid}
+    <span style="font-size:13px; font-weight:400; color:#5b6b7f; margin-left:8px;">
+      — relative to GWL1 baseline
+    </span>
+  </h3>
+
+  <p><strong>Definition:</strong> ${CID_DEFINITIONS[cid] || "Definition not available."}</p>
+
+  <p style="margin-top:6px;">
+    <strong>Region:</strong> ${region} ·
+    <strong>Method:</strong> ${formatMethod(method)} ·
+    <strong>Units:</strong> ${cidInfo.unit || ""}
+  </p>
+
+  <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
+`;
+
+drawAnomalyPlot(cidInfo);
 }
 
 function drawAnomalyPlot(cidInfo) {
