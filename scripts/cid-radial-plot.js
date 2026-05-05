@@ -77,6 +77,14 @@ const CONFIDENCE_DEFINITIONS = {
     "CID not broadly relevant for the selected region or context."
 };
 
+const TREND_DEFINITIONS = {
+  "Past upward trend":
+    "Significant positive observational trend detected over the historical period.",
+
+  "Past downward trend":
+    "Significant negative observational trend detected over the historical period."
+};
+
 const GWL_COLORS = {
   "1.5": "#FDB863",
   "2": "#F46D43",
@@ -370,7 +378,11 @@ function drawLegendArrow(x, y, direction) {
     stroke: "black",
     "stroke-width": 1.5,
     "marker-end": "url(#arrowhead)"
+    cursor: "help"
   }));
+
+  svg.appendChild(line);
+  return line;
 }
 
 function drawTitle(region) {
@@ -475,22 +487,24 @@ function drawLegend() {
   const upText = makeEl("text", {
     x: col1X + 20,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 14
   });
 
   upText.textContent = "Past upward trend";
-  svg.appendChild(upText);
+  addHtmlTooltip(upText, TREND_DEFINITIONS["Past upward trend"]);
+
 
   drawLegendArrow(col2X, rowY, "down");
 
   const downText = makeEl("text", {
     x: col2X + 20,
     y: rowY + 4,
-    "font-size": 13
+    "font-size": 14
   });
 
   downText.textContent = "Past downward trend";
-  svg.appendChild(downText);
+  addHtmlTooltip(downText, TREND_DEFINITIONS["Past downward trend"]);
+
 }
 
 function drawRadial(method, region) {
