@@ -475,35 +475,42 @@ function formatMethod(method) {
 }
 
 function showCidDetail(cid) {
+  if (!CID_ANOMALIES || !detailPanel) return;
+
+  const method = document.getElementById("cid-method").value;
+  const region = document.getElementById("cid-region").value;
+
+  const cidInfo = CID_ANOMALIES?.[method]?.[region]?.[cid];
+
   if (!cidInfo) {
+    detailPanel.innerHTML = `
+      <h3>${CID_LABELS[cid] || cid}</h3>
+      <p><strong>Definition:</strong> ${CID_DEFINITIONS[cid] || "Definition not available."}</p>
+      <p style="margin-top:6px;">No anomaly data available for this CID, method and region.</p>
+    `;
+    return;
+  }
+
   detailPanel.innerHTML = `
-    <h3>${CID_LABELS[cid] || cid}</h3>
+    <h3>
+      ${CID_LABELS[cid] || cid}
+      <span style="font-size:13px; font-weight:400; color:#5b6b7f; margin-left:8px;">
+        — anomalies relative to GWL1 baseline
+      </span>
+    </h3>
+
     <p><strong>Definition:</strong> ${CID_DEFINITIONS[cid] || "Definition not available."}</p>
-    <p style="margin-top:6px;">No anomaly data available for this CID, method and region.</p>
+
+    <p style="margin-top:6px;">
+      <strong>Region:</strong> ${region} ·
+      <strong>Method:</strong> ${formatMethod(method)} ·
+      <strong>Units:</strong> ${cidInfo.unit || ""}
+    </p>
+
+    <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
   `;
-  return;
-}
 
-detailPanel.innerHTML = `
-  <h3>
-    ${CID_LABELS[cid] || cid}
-    <span style="font-size:13px; font-weight:400; color:#5b6b7f; margin-left:8px;">
-      — relative to GWL1 baseline
-    </span>
-  </h3>
-
-  <p><strong>Definition:</strong> ${CID_DEFINITIONS[cid] || "Definition not available."}</p>
-
-  <p style="margin-top:6px;">
-    <strong>Region:</strong> ${region} ·
-    <strong>Method:</strong> ${formatMethod(method)} ·
-    <strong>Units:</strong> ${cidInfo.unit || ""}
-  </p>
-
-  <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
-`;
-
-drawAnomalyPlot(cidInfo);
+  drawAnomalyPlot(cidInfo);
 }
 
 function drawAnomalyPlot(cidInfo) {
