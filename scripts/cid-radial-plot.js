@@ -515,6 +515,49 @@ function drawLegend() {
   svg.appendChild(downText);
 }
 
+function drawRadial(method, region) {
+  clearSvg();
+  addArrowMarker();
+
+  const meta = CID_DATA.metadata;
+  const angles = getCidAngles();
+  const gwls = meta.gwls;
+  const data = CID_DATA.data[method][region];
+
+  const nRings = gwls.length;
+  const ringSize = radius / nRings;
+
+  drawTitle(region);
+  drawPolygonRingGuides(nRings, 10);
+
+  for (const cid of CID_ORDER) {
+    if (!data[cid]) continue;
+
+    const fills = data[cid].fills;
+    const [angle1, angle2] = angles[cid];
+
+    for (let i = 0; i < fills.length; i++) {
+      const rOuter = radius - i * ringSize;
+      const rInner = radius - (i + 1) * ringSize;
+
+      drawSectorPolygon(
+        rOuter,
+        rInner,
+        angle1,
+        angle2,
+        fills[i]
+      );
+    }
+
+    drawClickableCidSector(angle1, angle2, cid);
+    drawTrendArrow(angle1, angle2, data[cid].trend);
+  }
+
+  drawCidLabels(angles);
+  drawGwlLabels(gwls);
+  drawLegend();
+}
+
 function formatMethod(method) {
   return method.replace("method_", "Method ").toUpperCase();
 }
