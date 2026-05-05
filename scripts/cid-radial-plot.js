@@ -239,7 +239,6 @@ function drawClickableCidSector(angle1, angle2, cid) {
     hitArea.setAttribute("fill", "transparent");
   });
 
-  addHtmlTooltip(hitArea, CID_DEFINITIONS[cid] || "Definition not available.");
   svg.appendChild(hitArea);
 }
 
