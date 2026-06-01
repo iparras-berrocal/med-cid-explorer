@@ -578,6 +578,12 @@ function showCidDetail(cid) {
     return;
   }
 
+  const b = cidInfo.baseline || {};
+  const baselineText =
+    b.point !== null && b.point !== undefined && isFinite(b.point)
+      ? ` · <strong>GWL1 baseline:</strong> ${Number(b.point).toFixed(2)} ${cidInfo.unit || ""}`
+      : "";
+
   detailPanel.innerHTML = `
     <h3>
       ${CID_LABELS[cid] || cid}
@@ -591,7 +597,7 @@ function showCidDetail(cid) {
     <p style="margin-top:6px;">
       <strong>Region:</strong> ${region} ·
       <strong>Method:</strong> ${formatMethod(method)} ·
-      <strong>Units:</strong> ${cidInfo.unit || ""}
+      <strong>Units:</strong> ${cidInfo.unit || ""}${baselineText}
     </p>
 
     <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
