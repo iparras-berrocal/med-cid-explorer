@@ -582,11 +582,6 @@ function showCidDetail(cid) {
     if (v === null || v === undefined || !isFinite(v)) return "NA";
     return Number(v).toFixed(2);
   }
-  
-  function fmtBaseline(v) {
-    if (v === null || v === undefined || !isFinite(v)) return "NA";
-    return Number(v).toFixed(1);
-  }
 
   const b = cidInfo.baseline || {};
 
@@ -595,9 +590,9 @@ function showCidDetail(cid) {
       ? `
         <p style="margin-top:6px;">
           <strong>GWL1 baseline:</strong>
-          Mean ${fmtBaseline(b.point)} ${cidInfo.unit || ""} ·
-          P10–P90 ${fmtBaseline(b.p10)} to ${fmtBaseline(b.p90)} ·
-          Min–Max ${fmtBaseline(b.min)} to ${fmtBaseline(b.max)} ·
+          Mean ${fmtPanel(b.point)} ${cidInfo.unit || ""} ·
+          P10–P90 ${fmtanel(b.p10)} to ${fmtPanel(b.p90)} ·
+          Min–Max ${fmtPanel(b.min)} to ${fmtPanel(b.max)} ·
           n=${b.n ?? "NA"}
         </p>
       `
