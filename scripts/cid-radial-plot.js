@@ -597,7 +597,7 @@ function showCidDetail(cid) {
           <strong>GWL1 baseline:</strong>
           Mean ${fmtBaseline(b.point)} ${cidInfo.unit || ""} ·
           P10–P90 ${fmtBaseline(b.p10)} to ${fmtBaseline(b.p90)} ·
-          min–max ${fmtBaseline(b.min)} to ${fmtBaseline(b.max)} ·
+          Min–Max ${fmtBaseline(b.min)} to ${fmtBaseline(b.max)} ·
           n=${b.n ?? "NA"}
         </p>
       `
