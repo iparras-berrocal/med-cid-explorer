@@ -578,10 +578,24 @@ function showCidDetail(cid) {
     return;
   }
 
+  function fmtPanel(v) {
+    if (v === null || v === undefined || !isFinite(v)) return "NA";
+    return Number(v).toFixed(2);
+  }
+
   const b = cidInfo.baseline || {};
+
   const baselineText =
     b.point !== null && b.point !== undefined && isFinite(b.point)
-      ? ` · <strong>GWL1 baseline:</strong> ${Number(b.point).toFixed(2)} ${cidInfo.unit || ""}`
+      ? `
+        <p style="margin-top:6px;">
+          <strong>GWL1 baseline:</strong>
+          mean ${fmtPanel(b.point)} ${cidInfo.unit || ""} ·
+          P10–P90 ${fmtPanel(b.p10)} to ${fmtPanel(b.p90)} ·
+          min–max ${fmtPanel(b.min)} to ${fmtPanel(b.max)} ·
+          n=${b.n ?? "NA"}
+        </p>
+      `
       : "";
 
   detailPanel.innerHTML = `
@@ -597,8 +611,10 @@ function showCidDetail(cid) {
     <p style="margin-top:6px;">
       <strong>Region:</strong> ${region} ·
       <strong>Method:</strong> ${formatMethod(method)} ·
-      <strong>Units:</strong> ${cidInfo.unit || ""}${baselineText}
+      <strong>Units:</strong> ${cidInfo.unit || ""}
     </p>
+
+    ${baselineText}
 
     <div id="cid-anomaly-plot" style="margin-top:14px;"></div>
   `;
