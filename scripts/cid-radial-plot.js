@@ -407,7 +407,7 @@ function drawLegend() {
     x: x - 25,
     y: y - 40,
     width: 350,
-    height: 170,
+    height: 160,
     fill: "white",
     stroke: "#cccccc",
     "stroke-width": 1
