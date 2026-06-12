@@ -401,13 +401,13 @@ function drawTitle(region) {
 
 function drawLegend() {
   const x = 690;
-  let y = 170;
+  let y = 180;
 
   svg.appendChild(makeEl("rect", {
     x: x - 25,
     y: y - 40,
     width: 350,
-    height: 160,
+    height: 165,
     fill: "white",
     stroke: "#cccccc",
     "stroke-width": 1
@@ -458,7 +458,7 @@ function drawLegend() {
   }
 
   // --- Trend legend ---
-  const box2Y = 370;
+  const box2Y = 360;
 
   svg.appendChild(makeEl("rect", {
     x: x - 25,
