@@ -45,7 +45,7 @@ const LIKE_ORDER = [
   "Low confidence in direction of change",
   "Low confidence of decrease",
   "High confidence of decrease",
-  "Not broadly relevant"
+//  "Not broadly relevant"
 ];
 
 const IPCC_COLOR_MAP = {
@@ -54,7 +54,7 @@ const IPCC_COLOR_MAP = {
   "Low confidence in direction of change": "#FFFFFF",
   "Low confidence of decrease": "#9ECAE1",
   "High confidence of decrease": "#2C7FB8",
-  "Not broadly relevant": "#C9C9C9"
+ // "Not broadly relevant": "#C9C9C9"
 };
 
 const CONFIDENCE_DEFINITIONS = {
