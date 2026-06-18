@@ -40,7 +40,7 @@
       border-radius: 22px;
       padding: 34px 40px;
       box-shadow: 0 18px 45px rgba(16, 32, 51, 0.08);
-      margin-bottom: 26px;
+      margin-bottom: 22px;
     }
 
     .tag {
@@ -86,6 +86,57 @@
       font-size: 15px;
       line-height: 1.5;
       color: var(--muted);
+    }
+
+    .module-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .module-tab {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      border-radius: 18px;
+      padding: 18px 20px;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(16, 32, 51, 0.06);
+      transition: all 0.18s ease;
+    }
+
+    .module-tab:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .module-tab.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #ffffff 0%, #eef9fb 100%);
+      box-shadow: 0 14px 34px rgba(11, 114, 133, 0.13);
+    }
+
+    .module-tab h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+      color: var(--accent-dark);
+    }
+
+    .module-tab p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .module-panel {
+      display: none;
+    }
+
+    .module-panel.active {
+      display: block;
     }
 
     .tool-shell {
@@ -178,6 +229,27 @@
       color: var(--muted);
     }
 
+    .placeholder-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 18px 45px rgba(16, 32, 51, 0.07);
+    }
+
+    .placeholder-card h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: var(--accent-dark);
+    }
+
+    .placeholder-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 780px;
+    }
+
     .info-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -214,6 +286,10 @@
     }
 
     @media (max-width: 900px) {
+      .module-tabs {
+        grid-template-columns: 1fr;
+      }
+
       .tool-header {
         flex-direction: column;
       }
@@ -243,7 +319,7 @@
     <h1>Mediterranean Climatic Impact-Drivers (CIDs) Explorer</h1>
 
     <p class="subtitle">
-      Web tool based on the manuscript:
+      Companion web tool based on the manuscript:
       <em>“Assessing Regional Projections of Marine Climatic Impact Drivers Using Coordinated Ensembles: Framework and Application to the Mediterranean Sea”</em>,
       submitted to <em>Earth’s Future</em>.
     </p>
@@ -253,83 +329,109 @@
     </p>
   </section>
 
-  <section class="tool-shell">
+  <section class="module-tabs">
+    <button class="module-tab" data-module="simulation-evaluation">
+      <h2>Simulation evaluation</h2>
+      <p>Inspect model performance and simulation ratings used to define the filtering methods.</p>
+    </button>
 
-    <div class="tool-header">
-      <div>
-        <h2 class="tool-title">Scenario projections</h2>
-        <p class="tool-description">
-          Explore confidence in projected marine Climatic Impact-Drivers and inspect
-          multi-model anomaly ranges across global warming levels.
-        </p>
-      </div>
+    <button class="module-tab active" data-module="scenario-projections">
+      <h2>Scenario projections</h2>
+      <p>Explore projected CID changes, confidence levels and anomaly ranges across warming levels.</p>
+    </button>
+  </section>
 
-      <div class="controls">
-        <div class="control">
-          Method
-          <select id="cid-method">
-            <option value="method_A">Method A</option>
-            <option value="method_B">Method B</option>
-            <option value="method_C">Method C</option>
-          </select>
-        </div>
-
-        <div class="control">
-          Region
-          <select id="cid-region">
-            <option>Mediterranean Sea</option>
-            <option>Western Med</option>
-            <option>Eastern Med</option>
-            <option>Adriatic Sea</option>
-            <option>Aegean Sea</option>
-            <option>Continental coastline</option>
-            <option>Island coastline</option>
-          </select>
-        </div>
-      </div>
+  <section id="simulation-evaluation" class="module-panel">
+    <div class="placeholder-card">
+      <h2>Simulation evaluation</h2>
+      <p>
+        This module will summarize the evaluation of simulations and the rating information used
+        to build the filtering methods. Content to be added in the next development step.
+      </p>
     </div>
+  </section>
 
-    <div class="plot-card">
-      <div id="cid-radial-plot"></div>
+  <section id="scenario-projections" class="module-panel active">
 
-      <div id="cid-detail-panel" class="cid-detail-panel">
-        <h3>Select a CID</h3>
+    <section class="tool-shell">
+
+      <div class="tool-header">
+        <div>
+          <h2 class="tool-title">Scenario projections</h2>
+          <p class="tool-description">
+            Explore confidence in projected marine Climatic Impact-Drivers and inspect
+            multi-model anomaly ranges across global warming levels.
+          </p>
+        </div>
+
+        <div class="controls">
+          <div class="control">
+            Method
+            <select id="cid-method">
+              <option value="method_A">Method A</option>
+              <option value="method_B">Method B</option>
+              <option value="method_C">Method C</option>
+            </select>
+          </div>
+
+          <div class="control">
+            Region
+            <select id="cid-region">
+              <option>Mediterranean Sea</option>
+              <option>Western Med</option>
+              <option>Eastern Med</option>
+              <option>Adriatic Sea</option>
+              <option>Aegean Sea</option>
+              <option>Continental coastline</option>
+              <option>Island coastline</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="plot-card">
+        <div id="cid-radial-plot"></div>
+
+        <div id="cid-detail-panel" class="cid-detail-panel">
+          <h3>Select a CID</h3>
+          <p>
+            Click on a CID sector or label in the radial diagram to display anomaly information.
+            Hover over the anomaly bars to inspect numerical values.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="info-row">
+      <div class="info-box">
+        <h3>How to use</h3>
         <p>
-          Click on a CID sector or label in the radial diagram to display anomaly information.
+          Select a filtering method and Mediterranean region. Click on any CID sector or label
+          in the radial diagram to display anomaly ranges for increasing global warming levels.
           Hover over the anomaly bars to inspect numerical values.
         </p>
       </div>
-    </div>
 
-  </section>
+      <div class="info-box">
+        <h3>Filtering methods</h3>
+        <p>
+          <strong>Method A — Quality-based filtering:</strong> excludes simulations rated as Bad.<br>
+          <strong>Method B — Constrained ensemble:</strong> simulations that reach GWL4 and are not rated as Bad.<br>
+          <strong>Method C — Full ensemble:</strong> inclusion of all simulations.
+        </p>
+      </div>
 
-  <section class="info-row">
-    <div class="info-box">
-      <h3>How to use</h3>
-      <p>
-        Select a filtering method and Mediterranean region. Click on any CID sector or label
-        in the radial diagram to display anomaly ranges for increasing global warming levels.
-        Hover over the anomaly bars to inspect numerical values.
-      </p>
-    </div>
+      <div class="info-box">
+        <h3>Displayed information</h3>
+        <p>
+          The radial plot summarizes confidence in projected CID changes and historical
+          trend evidence. The detail panel shows ensemble mean anomalies, P10–P90 ranges,
+          min–max spread and the number of simulations.
+        </p>
+      </div>
+    </section>
 
-    <div class="info-box">
-      <h3>Filtering methods</h3>
-      <p>
-        <strong>Method A — Quality-based filtering:</strong> excludes simulations rated as Bad.<br>
-        <strong>Method B — Constrained ensemble:</strong> simulations that reach GWL4 and are not rated as Bad.<br>
-        <strong>Method C — Full ensemble:</strong> inclusion of all simulations.
-      </p>
-    </div>
-
-    <div class="info-box">
-      <h3>Displayed information</h3>
-      <p>
-        The radial plot summarizes confidence in projected CID changes and historical
-        trend evidence. The detail panel shows ensemble mean anomalies, P10–P90 ranges,
-        min–max spread and the number of simulations.
-      </p>
-    </div>
   </section>
 
   <footer>
@@ -339,6 +441,23 @@
 </main>
 
 <script src="scripts/cid-radial-plot.js"></script>
+
+<script>
+  const tabs = document.querySelectorAll(".module-tab");
+  const panels = document.querySelectorAll(".module-panel");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.module;
+
+      tabs.forEach(t => t.classList.remove("active"));
+      panels.forEach(p => p.classList.remove("active"));
+
+      tab.classList.add("active");
+      document.getElementById(target).classList.add("active");
+    });
+  });
+</script>
 
 </body>
 </html>
