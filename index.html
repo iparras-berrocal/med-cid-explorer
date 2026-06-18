@@ -201,7 +201,8 @@
       padding: 10px 6px 4px;
     }
 
-    #cid-radial-plot {
+    #cid-radial-plot,
+    #simulation-evaluation-plot {
       display: flex;
       justify-content: center;
       width: 100%;
@@ -227,27 +228,6 @@
       margin: 0;
       font-size: 14px;
       color: var(--muted);
-    }
-
-    .placeholder-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 30px;
-      box-shadow: 0 18px 45px rgba(16, 32, 51, 0.07);
-    }
-
-    .placeholder-card h2 {
-      margin: 0 0 10px;
-      font-size: 24px;
-      color: var(--accent-dark);
-    }
-
-    .placeholder-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 780px;
     }
 
     .info-row {
@@ -342,13 +322,32 @@
   </section>
 
   <section id="simulation-evaluation" class="module-panel">
-    <div class="placeholder-card">
-      <h2>Simulation evaluation</h2>
-      <p>
-        This module will summarize the evaluation of simulations and the rating information used
-        to build the filtering methods. Content to be added in the next development step.
-      </p>
-    </div>
+    <section class="tool-shell">
+      <div class="tool-header">
+        <div>
+          <h2 class="tool-title">Simulation evaluation</h2>
+          <p class="tool-description">
+            Compare each simulation against the observational reference used for model evaluation.
+          </p>
+        </div>
+
+        <div class="controls">
+          <div class="control">
+            CID
+            <select id="eval-cid"></select>
+          </div>
+
+          <div class="control">
+            Region
+            <select id="eval-region"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="plot-card">
+        <div id="simulation-evaluation-plot"></div>
+      </div>
+    </section>
   </section>
 
   <section id="scenario-projections" class="module-panel active">
@@ -441,6 +440,7 @@
 </main>
 
 <script src="scripts/cid-radial-plot.js"></script>
+<script src="scripts/simulation-evaluation-plot.js"></script>
 
 <script>
   const tabs = document.querySelectorAll(".module-tab");
