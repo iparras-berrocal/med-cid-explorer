@@ -220,13 +220,43 @@ function drawSimulationEvaluationPlot() {
       opacity
     });
 
-    add("line", { x1, y1: margin.top, x2: x1, y2: margin.top + innerH, stroke: lineColor, "stroke-width": 1 });
-    add("line", { x1: x2, y1: margin.top, x2, y2: margin.top + innerH, stroke: lineColor, "stroke-width": 1 });
-    add("line", { x1: margin.left, y1, x2: margin.left + innerW, y2: y1, stroke: lineColor, "stroke-width": 1 });
-    add("line", { x1: margin.left, y1: y2, x2: margin.left + innerW, y2, stroke: lineColor, "stroke-width": 1 });
+    add("line", {
+      x1,
+      y1: margin.top,
+      x2: x1,
+      y2: margin.top + innerH,
+      stroke: lineColor,
+      "stroke-width": 1
+    });
+
+    add("line", {
+      x1: x2,
+      y1: margin.top,
+      x2,
+      y2: margin.top + innerH,
+      stroke: lineColor,
+      "stroke-width": 1
+    });
+
+    add("line", {
+      x1: margin.left,
+      y1,
+      x2: margin.left + innerW,
+      y2: y1,
+      stroke: lineColor,
+      "stroke-width": 1
+    });
+
+    add("line", {
+      x1: margin.left,
+      y1: y2,
+      x2: margin.left + innerW,
+      y2,
+      stroke: lineColor,
+      "stroke-width": 1
+    });
   }
 
-  // Expert tolerance box and limits
   drawReferenceBox(
     ref.x,
     ref.y,
@@ -237,7 +267,6 @@ function drawSimulationEvaluationPlot() {
     0.35
   );
 
-  // 4SE box and limits
   if (isFinite(ref.x_se) && isFinite(ref.y_se)) {
     drawReferenceBox(
       ref.x,
@@ -388,14 +417,7 @@ Y: ${fmtEvalY(p.y)}`
     fill: "#102033"
   }).textContent = `${cidFullName} (${EVAL_CID_LABELS[cid] || cid}) · ${region}`;
 
-  add("text", {
-    x: margin.left,
-    y: 43,
-    "font-size": 12,
-    fill: "#5b6b7f"
-  }).textContent = `Reference: ${ref.label || ref.key || "reference"}`;
-
-  const boxLegendX = margin.left + 230;
+  const boxLegendX = margin.left;
   const boxLegendY = 43;
 
   add("rect", {
@@ -413,10 +435,10 @@ Y: ${fmtEvalY(p.y)}`
     y: boxLegendY,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = "Expert tolerance";
+  }).textContent = "±ETTE";
 
   add("rect", {
-    x: boxLegendX + 150,
+    x: boxLegendX + 85,
     y: boxLegendY - 10,
     width: 18,
     height: 10,
@@ -426,11 +448,11 @@ Y: ${fmtEvalY(p.y)}`
   });
 
   add("text", {
-    x: boxLegendX + 174,
+    x: boxLegendX + 109,
     y: boxLegendY,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = "4SE";
+  }).textContent = "±4σ";
 
   add("text", {
     x: margin.left + innerW / 2,
@@ -452,14 +474,6 @@ Y: ${fmtEvalY(p.y)}`
   const legendX = margin.left + innerW + 26;
   let legendY = margin.top + 12;
   const seenModels = new Set();
-
-  add("text", {
-    x: legendX,
-    y: legendY - 14,
-    "font-size": 12,
-    "font-weight": 700,
-    fill: "#102033"
-  }).textContent = "Models";
 
   points.forEach(p => {
     const label = cleanModelLabel(p);
