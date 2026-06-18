@@ -412,7 +412,7 @@ Y: ${fmtEvalY(p.y)}`
   add("text", {
     x: margin.left,
     y: 24,
-    "font-size": 16,
+    "font-size": 17,
     "font-weight": 700,
     fill: "#102033"
   }).textContent = `${cidFullName} (${EVAL_CID_LABELS[cid] || cid}) · ${region}`;
