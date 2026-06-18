@@ -13,17 +13,24 @@ const EVAL_CID_LABELS = {
   CUIfav: "CUI"
 };
 
-const RATING_STROKES = {
-  Reference: "#000000",
-  Good: "#1b7837",
-  Acceptable: "#fdae61",
-  Bad: "#d7191c",
-  "Not rated": "#777777"
+const OBS_LABELS = {
+  "CMEMS_rcp45": "CMEMS",
+  "CCI_rcp45": "CCI",
+  "ERA5_rcp45": "ERA5"
 };
+
+function cleanModelLabel(p) {
+  return OBS_LABELS[p.key] || p.label || p.key;
+}
 
 function fmtEval(v) {
   if (v === null || v === undefined || !isFinite(v)) return "NA";
   return Number(v).toFixed(2);
+}
+
+function fmtEvalY(v) {
+  if (v === null || v === undefined || !isFinite(v)) return "NA";
+  return Number(v).toExponential(2);
 }
 
 function setupSimulationEvaluationControls() {
@@ -35,23 +42,26 @@ function setupSimulationEvaluationControls() {
   cidSelect.innerHTML = "";
   regionSelect.innerHTML = "";
 
-  const cids = Object.keys(SIM_EVAL_DATA);
+  const cidOrder = [
+    "SST",
+    "SBT",
+    "Nmonth_sst_p99",
+    "Nmonth_sst_p01",
+    "NMONTH_T20m",
+    "SSS",
+    "MLD",
+    "SI",
+    "Nmonth_ws_p99",
+    "CUIfav"
+  ];
+
+  const cids = cidOrder.filter(cid => SIM_EVAL_DATA[cid]);
 
   cids.forEach(cid => {
     const option = document.createElement("option");
     option.value = cid;
     option.textContent = EVAL_CID_LABELS[cid] || cid;
     cidSelect.appendChild(option);
-  });
-
-  const firstCid = cids[0];
-  const regions = Object.keys(SIM_EVAL_DATA[firstCid] || {});
-
-  regions.forEach(region => {
-    const option = document.createElement("option");
-    option.value = region;
-    option.textContent = region;
-    regionSelect.appendChild(option);
   });
 
   cidSelect.addEventListener("change", () => {
@@ -104,16 +114,18 @@ function drawSimulationEvaluationPlot() {
     return;
   }
 
-  const w = 900;
+  const w = 1080;
   const h = 520;
-  const margin = { top: 50, right: 42, bottom: 82, left: 92 };
+  const margin = { top: 50, right: 210, bottom: 82, left: 92 };
   const innerW = w - margin.left - margin.right;
   const innerH = h - margin.top - margin.bottom;
 
   const ref = data.reference || {};
-  const points = data.points.filter(p =>
-    p.x !== null && p.y !== null && isFinite(p.x) && isFinite(p.y)
-  );
+
+  const points = data.points.filter(p => {
+    if (cid === "SSS" && p.key && p.key.startsWith("ORAS5")) return false;
+    return p.x !== null && p.y !== null && isFinite(p.x) && isFinite(p.y);
+  });
 
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
@@ -124,12 +136,15 @@ function drawSimulationEvaluationPlot() {
   if (isFinite(ref.x) && isFinite(ref.expert_tol_x)) {
     xs.push(ref.x - ref.expert_tol_x, ref.x + ref.expert_tol_x);
   }
+
   if (isFinite(ref.y) && isFinite(ref.expert_tol_y)) {
     ys.push(ref.y - ref.expert_tol_y, ref.y + ref.expert_tol_y);
   }
+
   if (isFinite(ref.x) && isFinite(ref.x_se)) {
     xs.push(ref.x - 4 * ref.x_se, ref.x + 4 * ref.x_se);
   }
+
   if (isFinite(ref.y) && isFinite(ref.y_se)) {
     ys.push(ref.y - 4 * ref.y_se, ref.y + 4 * ref.y_se);
   }
@@ -160,12 +175,14 @@ function drawSimulationEvaluationPlot() {
 
   function add(name, attrs = {}) {
     const el = document.createElementNS("http://www.w3.org/2000/svg", name);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    for (const [k, v] of Object.entries(attrs)) {
+      el.setAttribute(k, v);
+    }
     svg.appendChild(el);
     return el;
   }
 
-  function title(el, text) {
+  function addTitle(el, text) {
     const t = document.createElementNS("http://www.w3.org/2000/svg", "title");
     t.textContent = text;
     el.appendChild(t);
@@ -186,7 +203,6 @@ function drawSimulationEvaluationPlot() {
     });
   }
 
-  // Expert tolerance box
   drawBox(
     ref.x,
     ref.y,
@@ -197,7 +213,6 @@ function drawSimulationEvaluationPlot() {
     0.35
   );
 
-  // 4SE box
   if (isFinite(ref.x_se) && isFinite(ref.y_se)) {
     drawBox(
       ref.x,
@@ -210,7 +225,6 @@ function drawSimulationEvaluationPlot() {
     );
   }
 
-  // Grid and axes
   const ticks = 5;
 
   for (let i = 0; i <= ticks; i++) {
@@ -254,7 +268,7 @@ function drawSimulationEvaluationPlot() {
       "text-anchor": "end",
       "font-size": 11,
       fill: "#5b6b7f"
-    }).textContent = fmtEval(yv);
+    }).textContent = fmtEvalY(yv);
   }
 
   add("line", {
@@ -275,7 +289,6 @@ function drawSimulationEvaluationPlot() {
     "stroke-width": 1
   });
 
-  // Reference crosshair
   if (isFinite(ref.x)) {
     add("line", {
       x1: xScale(ref.x),
@@ -300,30 +313,35 @@ function drawSimulationEvaluationPlot() {
     });
   }
 
-  // Points
   points.forEach(p => {
-    const r = p.is_reference ? 6.5 : 5;
-    const stroke = RATING_STROKES[p.rating] || "#555555";
-    const strokeWidth = p.is_reference ? 1.4 : 1.1;
+    const r = 5;
+    const label = cleanModelLabel(p);
+
+    let fill = p.color || "#808080";
+
+    if (
+      (cid === "Nmonth_ws_p99" || cid === "CUIfav") &&
+      p.key === "ERA5_rcp45"
+    ) {
+      fill = "black";
+    }
 
     const point = add("circle", {
       cx: xScale(p.x),
       cy: yScale(p.y),
       r,
-      fill: p.color || "#808080",
-      stroke,
-      "stroke-width": strokeWidth,
+      fill,
+      stroke: "black",
+      "stroke-width": 0.9,
       cursor: "pointer"
     });
 
-    title(
+    addTitle(
       point,
-      `${p.label || p.key}
+      `${label}
 Rating: ${p.rating || "NA"}
 X: ${fmtEval(p.x)}
-Y: ${fmtEval(p.y)}
-p-value: ${fmtEval(p.pvalue)}
-stderr: ${fmtEval(p.stderr)}`
+Y: ${fmtEvalY(p.y)}`
     );
 
     point.addEventListener("mouseenter", () => {
@@ -335,7 +353,6 @@ stderr: ${fmtEval(p.stderr)}`
     });
   });
 
-  // Titles and labels
   add("text", {
     x: margin.left,
     y: 24,
@@ -359,44 +376,58 @@ stderr: ${fmtEval(p.stderr)}`
     fill: "#102033"
   }).textContent = data.x_label || "Mean at GWL1";
 
-  const yLabel = add("text", {
+  add("text", {
     x: 22,
     y: margin.top + innerH / 2,
     "text-anchor": "middle",
     "font-size": 13,
     fill: "#102033",
     transform: `rotate(-90 22 ${margin.top + innerH / 2})`
-  });
+  }).textContent = data.y_label || "Trend";
 
-  yLabel.textContent = data.y_label || "Trend";
-
-  // Rating legend
-  const legendX = margin.left + innerW - 230;
+  const legendX = margin.left + innerW + 26;
   let legendY = margin.top + 12;
+  const seenModels = new Set();
 
-  [
-    ["Reference", "#000000"],
-    ["Good", "#1b7837"],
-    ["Acceptable", "#fdae61"],
-    ["Bad", "#d7191c"]
-  ].forEach(([label, stroke]) => {
+  add("text", {
+    x: legendX,
+    y: legendY - 14,
+    "font-size": 12,
+    "font-weight": 700,
+    fill: "#102033"
+  }).textContent = "Models";
+
+  points.forEach(p => {
+    const label = cleanModelLabel(p);
+    if (seenModels.has(label)) return;
+    seenModels.add(label);
+
+    let fill = p.color || "#808080";
+
+    if (
+      (cid === "Nmonth_ws_p99" || cid === "CUIfav") &&
+      p.key === "ERA5_rcp45"
+    ) {
+      fill = "black";
+    }
+
     add("circle", {
       cx: legendX,
       cy: legendY,
-      r: 5,
-      fill: "white",
-      stroke,
-      "stroke-width": 2
+      r: 4,
+      fill,
+      stroke: "black",
+      "stroke-width": 0.8
     });
 
     add("text", {
-      x: legendX + 14,
+      x: legendX + 12,
       y: legendY + 4,
-      "font-size": 12,
+      "font-size": 11,
       fill: "#5b6b7f"
     }).textContent = label;
 
-    legendY += 18;
+    legendY += 16;
   });
 }
 
