@@ -13,6 +13,19 @@ const EVAL_CID_LABELS = {
   CUIfav: "CUI"
 };
 
+const EVAL_CID_DEFINITIONS = {
+  SST: "Sea Surface Temperature",
+  SBT: "Sea Bottom Temperature",
+  Nmonth_sst_p99: "Number of months per year with sea surface temperature above the 99th percentile",
+  Nmonth_sst_p01: "Number of months per year with sea surface temperature below the 1st percentile",
+  NMONTH_T20m: "Number of months per year with temperature at 20 m depth above 25°C",
+  SSS: "Sea Surface Salinity",
+  MLD: "Annual Maximum Mixed Layer Depth",
+  SI: "Stratification Index",
+  Nmonth_ws_p99: "Number of months per year with wind stress above the 99th percentile",
+  CUIfav: "Favorable Coastal Upwelling Index"
+};
+
 const OBS_LABELS = {
   "CMEMS_rcp45": "CMEMS",
   "CCI_rcp45": "CCI",
@@ -61,6 +74,7 @@ function setupSimulationEvaluationControls() {
     const option = document.createElement("option");
     option.value = cid;
     option.textContent = EVAL_CID_LABELS[cid] || cid;
+    option.title = EVAL_CID_DEFINITIONS[cid] || cid;
     cidSelect.appendChild(option);
   });
 
@@ -116,7 +130,7 @@ function drawSimulationEvaluationPlot() {
 
   const w = 1080;
   const h = 520;
-  const margin = { top: 50, right: 210, bottom: 82, left: 92 };
+  const margin = { top: 58, right: 210, bottom: 82, left: 92 };
   const innerW = w - margin.left - margin.right;
   const innerH = h - margin.top - margin.bottom;
 
@@ -188,22 +202,32 @@ function drawSimulationEvaluationPlot() {
     el.appendChild(t);
   }
 
-  function drawBox(cx, cy, dx, dy, fill, stroke, opacity) {
+  function drawReferenceBox(cx, cy, dx, dy, fill, lineColor, opacity) {
     if (![cx, cy, dx, dy].every(v => v !== null && isFinite(v))) return;
 
+    const x1 = xScale(cx - dx);
+    const x2 = xScale(cx + dx);
+    const y1 = yScale(cy + dy);
+    const y2 = yScale(cy - dy);
+
     add("rect", {
-      x: xScale(cx - dx),
-      y: yScale(cy + dy),
-      width: xScale(cx + dx) - xScale(cx - dx),
-      height: yScale(cy - dy) - yScale(cy + dy),
+      x: x1,
+      y: y1,
+      width: x2 - x1,
+      height: y2 - y1,
       fill,
-      stroke,
-      "stroke-width": 1,
+      stroke: "none",
       opacity
     });
+
+    add("line", { x1, y1: margin.top, x2: x1, y2: margin.top + innerH, stroke: lineColor, "stroke-width": 1 });
+    add("line", { x1: x2, y1: margin.top, x2, y2: margin.top + innerH, stroke: lineColor, "stroke-width": 1 });
+    add("line", { x1: margin.left, y1, x2: margin.left + innerW, y2: y1, stroke: lineColor, "stroke-width": 1 });
+    add("line", { x1: margin.left, y1: y2, x2: margin.left + innerW, y2, stroke: lineColor, "stroke-width": 1 });
   }
 
-  drawBox(
+  // Expert tolerance box and limits
+  drawReferenceBox(
     ref.x,
     ref.y,
     ref.expert_tol_x,
@@ -213,8 +237,9 @@ function drawSimulationEvaluationPlot() {
     0.35
   );
 
+  // 4SE box and limits
   if (isFinite(ref.x_se) && isFinite(ref.y_se)) {
-    drawBox(
+    drawReferenceBox(
       ref.x,
       ref.y,
       4 * ref.x_se,
@@ -268,7 +293,7 @@ function drawSimulationEvaluationPlot() {
       "text-anchor": "end",
       "font-size": 11,
       fill: "#5b6b7f"
-    }).textContent = fmtEvalY(yv);
+    }).textContent = fmtEval(yv);
   }
 
   add("line", {
@@ -353,20 +378,59 @@ Y: ${fmtEvalY(p.y)}`
     });
   });
 
+  const cidFullName = EVAL_CID_DEFINITIONS[cid] || data.label || EVAL_CID_LABELS[cid] || cid;
+
   add("text", {
     x: margin.left,
     y: 24,
     "font-size": 18,
     "font-weight": 700,
     fill: "#102033"
-  }).textContent = `${data.label || EVAL_CID_LABELS[cid] || cid} · ${region}`;
+  }).textContent = `${cidFullName} (${EVAL_CID_LABELS[cid] || cid}) · ${region}`;
 
   add("text", {
     x: margin.left,
     y: 43,
     "font-size": 12,
     fill: "#5b6b7f"
-  }).textContent = `Reference: ${ref.label || ref.key || "reference"} · shaded boxes: expert tolerance and 4SE`;
+  }).textContent = `Reference: ${ref.label || ref.key || "reference"}`;
+
+  const boxLegendX = margin.left + 230;
+  const boxLegendY = 43;
+
+  add("rect", {
+    x: boxLegendX,
+    y: boxLegendY - 10,
+    width: 18,
+    height: 10,
+    fill: "#A8D5A2",
+    opacity: 0.35,
+    stroke: "#A8D5A2"
+  });
+
+  add("text", {
+    x: boxLegendX + 24,
+    y: boxLegendY,
+    "font-size": 12,
+    fill: "#5b6b7f"
+  }).textContent = "Expert tolerance";
+
+  add("rect", {
+    x: boxLegendX + 150,
+    y: boxLegendY - 10,
+    width: 18,
+    height: 10,
+    fill: "#4C8F5A",
+    opacity: 0.55,
+    stroke: "#4C8F5A"
+  });
+
+  add("text", {
+    x: boxLegendX + 174,
+    y: boxLegendY,
+    "font-size": 12,
+    fill: "#5b6b7f"
+  }).textContent = "4SE";
 
   add("text", {
     x: margin.left + innerW / 2,
