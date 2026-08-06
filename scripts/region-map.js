@@ -2,29 +2,7 @@ let REGION_SVG_DOCUMENT = null;
 let REGION_SVG_PATHS = [];
 
 /* =========================================================
-   HELPERS
-   ========================================================= */
-
-function selectorContainsRegion(selectElement, regionName) {
-  if (!selectElement || !regionName) return false;
-
-  return Array.from(selectElement.options).some(
-    option => option.value === regionName
-  );
-}
-
-function updateSelectedRegionLabel(regionName) {
-  const selectedName =
-    document.getElementById("region-map-selected-name");
-
-  if (selectedName) {
-    selectedName.textContent =
-      regionName || "No region selected";
-  }
-}
-
-/* =========================================================
-   SVG HIGHLIGHT
+   HIGHLIGHT SELECTED REGION
    ========================================================= */
 
 function highlightSelectedSvgRegion(regionName) {
@@ -43,42 +21,17 @@ function highlightSelectedSvgRegion(regionName) {
     );
   });
 
-  updateSelectedRegionLabel(regionName);
+  const selectedName =
+    document.getElementById("region-map-selected-name");
+
+  if (selectedName) {
+    selectedName.textContent =
+      regionName || "No region selected";
+  }
 }
 
 /* =========================================================
-   CHANGE REGION FROM THE MAP
-   ========================================================= */
-
-function selectRegionFromSvg(regionName) {
-  const regionSelect =
-    document.getElementById("cid-region");
-
-  if (!regionSelect || !regionName) return;
-
-  if (!selectorContainsRegion(regionSelect, regionName)) {
-    console.warn(
-      `Region "${regionName}" is not available in the region selector.`
-    );
-
-    return;
-  }
-
-  if (regionSelect.value !== regionName) {
-    regionSelect.value = regionName;
-
-    regionSelect.dispatchEvent(
-      new Event("change", {
-        bubbles: true
-      })
-    );
-  }
-
-  highlightSelectedSvgRegion(regionName);
-}
-
-/* =========================================================
-   CONNECT SVG REGIONS
+   LOAD SVG
    ========================================================= */
 
 function connectSvgRegions() {
@@ -102,37 +55,20 @@ function connectSvgRegions() {
     REGION_SVG_DOCUMENT.querySelectorAll(".region")
   );
 
+  /*
+    The map is display-only:
+    disable mouse and keyboard interaction on every region.
+  */
   REGION_SVG_PATHS.forEach(path => {
-    const regionName =
-      path.dataset.regionName;
-
-    if (!regionName) return;
-
-    path.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      selectRegionFromSvg(regionName);
-    });
-
-    path.addEventListener("keydown", event => {
-      if (
-        event.key === "Enter" ||
-        event.key === " "
-      ) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        selectRegionFromSvg(regionName);
-      }
-    });
+    path.style.pointerEvents = "none";
+    path.removeAttribute("tabindex");
   });
 
   refreshSvgRegionSelection();
 }
 
 /* =========================================================
-   CONNECT REGION SELECTOR
+   MAIN SELECTOR
    ========================================================= */
 
 function connectRegionSelector() {
