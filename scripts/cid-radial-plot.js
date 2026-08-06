@@ -401,7 +401,7 @@ function drawTitle(region) {
 
 function drawLegend() {
   const x = 690;
-  let y = 180;
+  let y = 210;
 
   svg.appendChild(makeEl("rect", {
     x: x - 25,
@@ -458,7 +458,7 @@ function drawLegend() {
   }
 
   // --- Trend legend ---
-  const box2Y = 360;
+  const box2Y = 390;
 
   svg.appendChild(makeEl("rect", {
     x: x - 25,
