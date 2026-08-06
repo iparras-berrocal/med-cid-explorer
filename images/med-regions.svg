@@ -16,16 +16,11 @@
   }
 
   .region {
-    cursor: pointer;
+    cursor: none;
     vector-effect: non-scaling-stroke;
-    fill-opacity: 0.015;
-    stroke-opacity: 0.30;
-    stroke-width: 1.2;
-    transition:
-      fill-opacity 0.15s ease,
-      stroke-opacity 0.15s ease,
-      stroke-width 0.15s ease,
-      filter 0.15s ease;
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    stroke-width: 0;
   }
 
   .region-basin {
@@ -55,18 +50,18 @@
 
   .region:hover,
   .region.is-hovered {
-    fill-opacity: 0.18;
-    stroke-opacity: 0.85;
-    stroke-width: 1.4;
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    stroke-width: 0;
   }
 
   .region.is-selected {
-    fill-opacity: 0.45;
+    fill-opacity: 0.46;
     stroke-opacity: 1;
     stroke: #102033;
-    stroke-width: 1.8;
+    stroke-width: 1.6;
     filter: drop-shadow(
-      0 1px 2px rgba(16, 32, 51, 0.20)
+      0 1px 2px rgba(16, 32, 51, 0.18)
     );
   }
 </style>
