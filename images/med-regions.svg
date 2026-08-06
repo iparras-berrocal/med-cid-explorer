@@ -23,29 +23,13 @@
     stroke-width: 0;
   }
 
-  .region-basin {
-    fill: #0b7285;
-    stroke: #075969;
-  }
-
-  .region-subregion {
-    fill: #f59e0b;
-    stroke: #d97706;
-  }
-
-  .region-regional-sea {
-    fill: #7c6ee6;
-    stroke: #5b4dc4;
-  }
-
-  .region-coastal {
-    fill: #ef4444;
-    stroke: #b42318;
-  }
-
+  .region-basin,
+  .region-subregion,
+  region-regional-sea,
+  region-coastal,
   .region-island {
-    fill: #db2777;
-    stroke: #9d174d;
+    fill: #0f6d8c;
+  stroke: #0a4f67;
   }
 
   .region:hover,
