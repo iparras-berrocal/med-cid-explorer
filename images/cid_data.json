@@ -92,16 +92,14 @@
       "Low confidence of increase": "#FDD494",
       "Low confidence in direction of change": "#FFFFFF",
       "Low confidence of decrease": "#9ECAE1",
-      "High confidence of decrease": "#2C7FB8",
-      "Not broadly relevant": "#C9C9C9"
+      "High confidence of decrease": "#2C7FB8"
     },
     "like_order": [
       "High confidence of increase",
       "Low confidence of increase",
       "Low confidence in direction of change",
       "Low confidence of decrease",
-      "High confidence of decrease",
-      "Not broadly relevant"
+      "High confidence of decrease"
     ]
   },
   "data": {
@@ -658,7 +656,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF",
+            "#F89C2E",
             "#F89C2E"
           ],
           "trend": {
@@ -701,7 +699,7 @@
         "NMONTH_T20m": {
           "fills": [
             "#FDD494",
-            "#FFFFFF",
+            "#FDD494",
             "#F89C2E",
             "#F89C2E",
             "#F89C2E"
@@ -762,7 +760,7 @@
         },
         "Nmonth_sst_p01": {
           "fills": [
-            "#9ECAE1",
+            "#2C7FB8",
             "#9ECAE1",
             "#9ECAE1",
             "#2C7FB8",
@@ -810,7 +808,7 @@
             "#FDD494",
             "#FFFFFF",
             "#FFFFFF",
-            "#FDD494",
+            "#F89C2E",
             "#F89C2E"
           ],
           "trend": {
@@ -948,7 +946,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "down",
@@ -962,7 +960,7 @@
             "#FDD494",
             "#F89C2E",
             "#FFFFFF",
-            "#FFFFFF",
+            "#F89C2E",
             "#F89C2E"
           ],
           "trend": {
@@ -978,7 +976,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#FDD494"
           ],
           "trend": {
             "direction": "up",
@@ -1098,9 +1096,9 @@
           "fills": [
             "#FFFFFF",
             "#FFFFFF",
-            "#9ECAE1",
             "#FFFFFF",
-            "#9ECAE1"
+            "#FFFFFF",
+            "#FFFFFF"
           ],
           "trend": {
             "direction": "down",
@@ -1111,7 +1109,7 @@
         },
         "SI": {
           "fills": [
-            "#F89C2E",
+            "#FDD494",
             "#F89C2E",
             "#FFFFFF",
             "#F89C2E",
@@ -1130,7 +1128,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "up",
@@ -1148,9 +1146,9 @@
             "#9ECAE1"
           ],
           "trend": {
-            "direction": "down",
+            "direction": "up",
             "significant": false,
-            "raw": "non-significant decrease",
+            "raw": "non-significant increase",
             "source": "ERA5"
           }
         },
@@ -1403,8 +1401,8 @@
         "MLD": {
           "fills": [
             "#FFFFFF",
-            "#9ECAE1",
-            "#9ECAE1",
+            "#FFFFFF",
+            "#FFFFFF",
             "#2C7FB8",
             "#2C7FB8"
           ],
@@ -1447,7 +1445,7 @@
         },
         "Nmonth_ws_p99": {
           "fills": [
-            "#9ECAE1",
+            "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
             "#9ECAE1",
@@ -1463,7 +1461,7 @@
         "NMONTH_T20m": {
           "fills": [
             "#FDD494",
-            "#FDD494",
+            "#F89C2E",
             "#F89C2E",
             "#F89C2E",
             "#F89C2E"
@@ -1540,7 +1538,7 @@
         "SSS": {
           "fills": [
             "#FDD494",
-            "#FFFFFF",
+            "#FDD494",
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF"
@@ -1769,7 +1767,7 @@
             "#FDD494",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF",
+            "#F89C2E",
             "#F89C2E"
           ],
           "trend": {
@@ -1828,7 +1826,7 @@
         },
         "Nmonth_sst_p01": {
           "fills": [
-            "#9ECAE1",
+            "#2C7FB8",
             "#9ECAE1",
             "#9ECAE1",
             "#2C7FB8",
@@ -1980,7 +1978,7 @@
         },
         "Nmonth_sst_p01": {
           "fills": [
-            "#2C7FB8",
+            "#9ECAE1",
             "#2C7FB8",
             "#2C7FB8",
             "#2C7FB8",
@@ -1995,8 +1993,8 @@
         },
         "SSS": {
           "fills": [
-            "#FDD494",
-            "#FFFFFF",
+            "#F89C2E",
+            "#F89C2E",
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF"
@@ -2014,7 +2012,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "down",
@@ -2043,8 +2041,8 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF",
-            "#FFFFFF"
+            "#FDD494",
+            "#FDD494"
           ],
           "trend": {
             "direction": "up",
@@ -2147,9 +2145,9 @@
         },
         "SSS": {
           "fills": [
-            "#FFFFFF",
-            "#FFFFFF",
-            "#FFFFFF",
+            "#FDD494",
+            "#F89C2E",
+            "#F89C2E",
             "#FFFFFF",
             "#FFFFFF"
           ],
@@ -2166,7 +2164,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#9ECAE1"
+            "#FFFFFF"
           ],
           "trend": {
             "direction": "down",
@@ -2177,9 +2175,9 @@
         },
         "SI": {
           "fills": [
+            "#FDD494",
             "#F89C2E",
-            "#F89C2E",
-            "#F89C2E",
+            "#FFFFFF",
             "#F89C2E",
             "#F89C2E"
           ],
@@ -2196,7 +2194,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "up",
@@ -2214,9 +2212,9 @@
             "#9ECAE1"
           ],
           "trend": {
-            "direction": "down",
+            "direction": "up",
             "significant": false,
-            "raw": "non-significant decrease",
+            "raw": "non-significant increase",
             "source": "ERA5"
           }
         },
@@ -2833,7 +2831,7 @@
         "NMONTH_T20m": {
           "fills": [
             "#FDD494",
-            "#FFFFFF",
+            "#FDD494",
             "#F89C2E",
             "#F89C2E",
             "#F89C2E"
@@ -2894,7 +2892,7 @@
         },
         "Nmonth_sst_p01": {
           "fills": [
-            "#9ECAE1",
+            "#2C7FB8",
             "#9ECAE1",
             "#9ECAE1",
             "#2C7FB8",
@@ -2942,7 +2940,7 @@
             "#FDD494",
             "#FFFFFF",
             "#FFFFFF",
-            "#FDD494",
+            "#F89C2E",
             "#FFFFFF"
           ],
           "trend": {
@@ -3080,7 +3078,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "down",
@@ -3110,7 +3108,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#FDD494"
           ],
           "trend": {
             "direction": "up",
@@ -3230,9 +3228,9 @@
           "fills": [
             "#FFFFFF",
             "#FFFFFF",
-            "#9ECAE1",
             "#FFFFFF",
-            "#9ECAE1"
+            "#FFFFFF",
+            "#FFFFFF"
           ],
           "trend": {
             "direction": "down",
@@ -3243,9 +3241,9 @@
         },
         "SI": {
           "fills": [
-            "#F89C2E",
-            "#F89C2E",
-            "#F89C2E",
+            "#FDD494",
+            "#FDD494",
+            "#FFFFFF",
             "#F89C2E",
             "#F89C2E"
           ],
@@ -3262,7 +3260,7 @@
             "#FFFFFF",
             "#FFFFFF",
             "#FFFFFF",
-            "#FFFFFF"
+            "#9ECAE1"
           ],
           "trend": {
             "direction": "up",
@@ -3280,9 +3278,9 @@
             "#9ECAE1"
           ],
           "trend": {
-            "direction": "down",
+            "direction": "up",
             "significant": false,
-            "raw": "non-significant decrease",
+            "raw": "non-significant increase",
             "source": "ERA5"
           }
         },
